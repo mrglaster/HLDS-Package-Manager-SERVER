@@ -17,7 +17,7 @@ public class StructureOrganizer {
         String rootPath = FtpConstants.getFtpPath();
         String[] rootFolders = {
                 "source",
-                "goldsource"
+                "gold"
         };
 
         String[] goldsourceSubfolders = {
