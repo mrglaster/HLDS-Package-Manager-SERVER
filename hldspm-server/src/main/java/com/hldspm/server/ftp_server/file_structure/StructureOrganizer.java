@@ -49,7 +49,7 @@ public class StructureOrganizer {
             return false;
         }
 
-        File goldsourceFolder = new File(rootFolder, "goldsource");
+        File goldsourceFolder = new File(rootFolder, "gold");
         if (!checkSubfolders(goldsourceFolder, goldsourceSubfolders)) {
             return false;
         }
@@ -103,7 +103,7 @@ public class StructureOrganizer {
         File sourceFolder = new File(rootFolder, "source");
         sourceFolder.mkdirs();
 
-        File goldSourceFolder = new File(rootFolder, "goldsource");
+        File goldSourceFolder = new File(rootFolder, "gold");
         goldSourceFolder.mkdirs();
 
         // Создание папки maps в папке goldsource

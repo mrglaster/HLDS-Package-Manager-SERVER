@@ -17,7 +17,7 @@ import java.util.List;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class})
 public class ServerApplication {
 
-	private static JdbcTemplate jdbcTemplate;
+	public static JdbcTemplate jdbcTemplate;
 
 
 	@Autowired

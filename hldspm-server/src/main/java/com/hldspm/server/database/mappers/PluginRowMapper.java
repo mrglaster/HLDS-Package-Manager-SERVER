@@ -14,6 +14,7 @@ public class PluginRowMapper implements RowMapper<PluginModel> {
         pm.setEngine(rs.getInt("engine"));
         pm.setGame(rs.getString("game"));
         pm.setName(rs.getString("name"));
+        pm.setTime(rs.getTimestamp("time"));
         return pm;
 
     }
