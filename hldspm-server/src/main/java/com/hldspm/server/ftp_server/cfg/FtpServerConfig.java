@@ -1,25 +1,18 @@
 package com.hldspm.server.ftp_server.cfg;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
-import org.apache.ftpserver.ftplet.Authority;
+
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.UserManager;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.util.ArrayList;
-import java.util.List;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.hldspm.server.ftp_server.cfg.FtpConstants.getFtpPath;
 
 @Configuration
 public class FtpServerConfig {
-
-
-
     private static final String REPO_DATA_ROOT = getFtpPath();
     @Bean
     public FtpServerFactory ftpServerFactory() throws FtpException {

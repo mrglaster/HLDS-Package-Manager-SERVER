@@ -1,10 +1,7 @@
 package com.hldspm.server.resource_validators;
-
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.util.regex.Pattern;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 
@@ -29,4 +26,13 @@ public class GeneralValidator {
     public boolean isTarGz() {
         return !this.base64String.isEmpty() && this.tarInputStream != null;
     }
+
+    public boolean isBase64(String input) {
+        String base64Pattern = "^[A-Za-z0-9+/]*={0,2}$";
+        return input.length() != 0 &&  Pattern.matches(base64Pattern, input);
+    }
+
+
+
+
 }
