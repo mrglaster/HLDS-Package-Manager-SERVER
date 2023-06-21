@@ -1,7 +1,7 @@
 package com.hldspm.server.database.data_processor.maps_processor;
 
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.connections.requests.MapUploadRequest;
+import com.hldspm.server.connections.requests.upload_requests.MapUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.constants.MainConstants;
 import com.hldspm.server.database.data_processor.uploads_checks.UploadDataChecks;
@@ -34,7 +34,7 @@ public class MapsUploader {
     private static void saveUploadedMap(MapUploadRequest request){
         String mapsPath = FtpConstants.getFtpPath() + "/" + request.getEngine() + "/" + "maps"+ "/"+ request.getGame();
         try {
-            byte[] bytes = Base64.getDecoder().decode(request.getUploadedData().getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = Base64.getDecoder().decode(request.getData().getBytes(StandardCharsets.UTF_8));
             FileOutputStream fos = new FileOutputStream(mapsPath + "/" + request.getName() + ".tar.gz");
             fos.write(bytes);
             fos.close();
@@ -47,10 +47,10 @@ public class MapsUploader {
 
     public static String processMapUpload(MapUploadRequest request){
 
-        String uploaderToken = request.getUploaderToken();
+        String uploaderToken = request.getToken();
         String game = request.getGame();
         String name = request.getName();
-        String uploadedData = request.getUploadedData();
+        String uploadedData = request.getData();
 
         if (!UploaderVerification.isValidUploader(uploaderToken)) {
             return StatusResponses.generateBadTokenError();

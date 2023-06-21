@@ -1,6 +1,6 @@
 package com.hldspm.server.connections.controllers.maps_controllers;
 
-import com.hldspm.server.connections.requests.MapGetRequest;
+import com.hldspm.server.connections.requests.get_requests.MapGetRequest;
 import com.hldspm.server.database.data_processor.maps_processor.MapsGetter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

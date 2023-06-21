@@ -1,4 +1,4 @@
-package com.hldspm.server.connections.requests;
+package com.hldspm.server.connections.requests.get_requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
 import com.hldspm.server.models.ManifestElementModel;
@@ -7,7 +7,7 @@ import com.hldspm.server.models.ManifestElementModel;
 import java.util.List;
 import java.util.Objects;
 
-public class ManifestGetRequest {
+public class ManifestGetRequest{
 
     @JsonProperty("engine")
     private String engine;

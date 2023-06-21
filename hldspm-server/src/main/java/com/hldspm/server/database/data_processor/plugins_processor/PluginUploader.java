@@ -1,7 +1,7 @@
 package com.hldspm.server.database.data_processor.plugins_processor;
 
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.connections.requests.PluginUploadRequest;
+import com.hldspm.server.connections.requests.upload_requests.PluginUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.data_processor.uploads_checks.UploadDataChecks;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
@@ -70,7 +70,7 @@ public class PluginUploader{
                 return StatusResponses.generateInvalidResourceDataErr();
             }
         } catch (IOException e) {
-            return StatusResponses.generateSuccessfulUpload();
+            return StatusResponses.generateBadRequestErr();
         }
         saveUploadedPlugin(request);
         return StatusResponses.generateSuccessfulUpload();

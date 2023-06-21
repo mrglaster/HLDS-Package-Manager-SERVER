@@ -1,6 +1,6 @@
 package com.hldspm.server.connections.controllers.plugins_controllers;
 
-import com.hldspm.server.connections.requests.PluginUploadRequest;
+import com.hldspm.server.connections.requests.upload_requests.PluginUploadRequest;
 import com.hldspm.server.database.data_processor.plugins_processor.PluginUploader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

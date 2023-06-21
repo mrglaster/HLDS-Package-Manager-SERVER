@@ -1,6 +1,6 @@
 package com.hldspm.server.connections.controllers.maps_controllers;
 
-import com.hldspm.server.connections.requests.MapUploadRequest;
+import com.hldspm.server.connections.requests.upload_requests.MapUploadRequest;
 import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

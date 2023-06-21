@@ -1,6 +1,6 @@
 package com.hldspm.server.connections.controllers.plugins_controllers;
 
-import com.hldspm.server.connections.requests.PluginGetRequest;
+import com.hldspm.server.connections.requests.get_requests.PluginGetRequest;
 import com.hldspm.server.database.data_processor.plugins_processor.PluginGetter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

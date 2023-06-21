@@ -6,8 +6,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 public class PluginValidator extends GeneralValidator{
@@ -35,8 +33,8 @@ public class PluginValidator extends GeneralValidator{
 
         while ((entry = super.tarInputStream.getNextTarEntry()) != null) {
             String name = entry.getName();
-
             if(name.split("/").length - 1 == 0 && !name.endsWith(".txt") && !name.endsWith(".ini") && !name.endsWith(".html") && !name.endsWith(".wad")) return false;
+            if (name.contains("addons/amxmodx/scripting") && name.endsWith(".sma")) return true;
             if (name.startsWith("addons/")) {
                 containsAddonsFolder = true;
                 if (name.startsWith("addons/amxmodx/")) {

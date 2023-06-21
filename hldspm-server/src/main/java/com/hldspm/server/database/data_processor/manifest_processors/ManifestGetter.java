@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.connections.requests.ManifestGetRequest;
+import com.hldspm.server.connections.requests.get_requests.ManifestGetRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.mappers.SingleNameRowMapper;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
