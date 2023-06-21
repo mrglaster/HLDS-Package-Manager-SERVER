@@ -8,6 +8,11 @@ CREATE TABLE IF NOT EXISTS engines(
 );	
 
 
+CREATE TABLE IF NOT EXISTS content_types(
+	id BIGSERIAL  PRIMARY KEY,
+	name VARCHAR(6) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS maps(
 	id BIGSERIAL PRIMARY KEY ,
 	engine INT NOT NULL,
@@ -45,13 +50,19 @@ CREATE TABLE IF NOT EXISTS uploaders(
 
 CREATE TABLE IF NOT EXISTS bundles(
 	id BIGSERIAL PRIMARY KEY,
+	content_type INT NOT NULL,
+	engine INT NOT NULL,
+	game VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL UNIQUE,
-	plugins bigint[] NOT NULL
+	elements bigint[] NOT NULL,
+	FOREIGN KEY (content_type) REFERENCES content_types(id),
+	FOREIGN KEY (engine) REFERENCES engines(id)
 );
 
 INSERT INTO engines (name) VALUES ('gold'), ('source');
+INSERT INTO content_types(name) VALUES ('plugin'), ('map'), ('module');
 
 INSERT INTO uploaders(name, token) VALUES 
-('Glaster', 'V5dFKftlGLTmbA4XLgNZyGJ1Ftyx9CIY5TQvlVT5vk83BnQEy8pxSVLrQiIjhMZU0CSo291hY0kBly1ILMioUhmcHMKojbPLqhoJnageADBpfcwxbr1k0RhypKHb4HSNihiQgHVVy8C3dc1RhW0zeWcGkmv2oeqsJI1FCiVukGTCgANguVfZknaM9M2vIxkVliIhltoyeq3cAs98ksyxkIiWB0xUWUsUYumdOkYFSUNtXantmciT3WxNR9aaz'),
-('Ufame', 'kzlfTdnOHWiJvhUgf8iBvid2noPtvPQDC37pRwevrXoP9FrWaUbDAXfPpe5nY2URhJQnBK59exDKIgGatjPwJTifhal4Qg0XRJ28WfjUbc6GLbu4JnS9feskbV8fF7FGk8EmVaByGiDOMPx16whRHxNKQoiQ3K84lQdZICd2QjvOAoOcFSJRUTWSNRhhfdua2YdwhXEew1kBofwWWe3jIhxrn2f2jqE73QWKPrtw3kQ1VNoRiminCoKqt4Vf7');
+('Glaster', 'TOKEN I'),
+('Ufame', 'TOKEN II');
 
