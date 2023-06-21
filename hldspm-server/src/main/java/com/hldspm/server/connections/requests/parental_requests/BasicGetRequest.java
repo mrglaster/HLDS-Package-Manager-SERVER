@@ -43,4 +43,19 @@ public class BasicGetRequest {
         return Objects.equals(engine, "gold") || Objects.equals(engine, "source");
     }
 
+    public int engineToId(){
+        switch(engine){
+            case "gold" -> {
+                return 1;
+            }
+            case "source" -> {
+                return 2;
+            }
+            case "source2" -> {
+                return 3;
+            }
+        }
+        return 1;
+    }
+
 }

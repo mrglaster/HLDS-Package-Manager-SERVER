@@ -15,4 +15,9 @@ public class SingleNameModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

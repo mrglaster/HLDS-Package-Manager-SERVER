@@ -1,18 +1,14 @@
 package com.hldspm.server.models;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-
 /**Model for the Bundle object*/
 public class BundleModel {
     private long id;
     private String name;
-    private Array pluginIds;
+    private String pluginIds;
 
     public BundleModel(){}
 
-    public BundleModel(long id, String name, Array pluginIds) {
+    public BundleModel(long id, String name, String pluginIds) {
         this.id = id;
         this.name = name;
         this.pluginIds = pluginIds;
@@ -23,7 +19,7 @@ public class BundleModel {
         return "BundleModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", pluginIds=" + pluginIds.toString() +
+                ", pluginIds=" + pluginIds +
                 '}';
     }
 
@@ -43,11 +39,11 @@ public class BundleModel {
         this.name = name;
     }
 
-    public Array getPluginIds() {
+    public String getPluginIds() {
         return pluginIds;
     }
 
-    public void setPluginIds(Array pluginIds) {
+    public void setPluginIds(String pluginIds) {
         this.pluginIds = pluginIds;
     }
 }

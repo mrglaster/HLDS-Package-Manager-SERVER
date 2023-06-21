@@ -18,6 +18,6 @@ public class FtpConstants {
 
     /**Returns the path to the ftp-accessible directory*/
     public static String getFtpPath(){
-        return getServerPath() + "\\" + "files";
+        return getServerPath() + "/" + "files";
     }
 }
