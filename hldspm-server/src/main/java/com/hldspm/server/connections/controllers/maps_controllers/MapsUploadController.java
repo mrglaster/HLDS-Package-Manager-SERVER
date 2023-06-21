@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MapsUploadController {
 
-    @PostMapping({"upload/map"})
+    @PostMapping(value={"upload/map"}, produces="application/json")
     public String uploadMap(@RequestBody MapUploadRequest request){
         return MapsUploader.processMapUpload(request);
     }

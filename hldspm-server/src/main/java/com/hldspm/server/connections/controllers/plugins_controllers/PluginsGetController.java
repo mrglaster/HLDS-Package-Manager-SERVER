@@ -1,6 +1,5 @@
 package com.hldspm.server.connections.controllers.plugins_controllers;
 
-import com.hldspm.server.connections.requests.MapGetRequest;
 import com.hldspm.server.connections.requests.PluginGetRequest;
 import com.hldspm.server.database.data_processor.plugins_processor.PluginGetter;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PluginsGetController {
-    @GetMapping({"/plugin", "/plugin/", "/get-plugin/", "/get-plugin"})
+    @GetMapping(value={"/plugin", "/plugin/", "/get-plugin/", "/get-plugin"}, produces="application/json")
     public ResponseEntity<String> getPlugin(@RequestBody PluginGetRequest request){
         String game = request.getGame();
         String name = request.getName();

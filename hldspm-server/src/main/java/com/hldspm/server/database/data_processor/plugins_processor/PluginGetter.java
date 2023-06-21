@@ -16,7 +16,7 @@ public class PluginGetter extends MapsGetter{
 
 
     @Override
-    protected  String getIdentificationQuery(String game, String name) {
+    protected String getIdentificationQuery(String game, String name) {
         if (name.contains("%")){
             return "SELECT * FROM plugins WHERE game= '" + game + "' AND name='"+name+"';";
         }

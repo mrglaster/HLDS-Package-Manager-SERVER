@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PluginUploadController {
-    @PostMapping({"upload/plugin"})
+    @PostMapping(value={"upload/plugin"}, produces="application/json")
     public String uploadPlugin(@RequestBody PluginUploadRequest request){
         return PluginUploader.processPluginUpload(request);
     }
