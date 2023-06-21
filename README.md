@@ -150,7 +150,8 @@
    ],
    "maps":[
       "ftp://anonymous@localhost/gold/maps/hl/rats.tar.gz"
-   ]
+   ],
+   "errors": []
 }
 ```
 
