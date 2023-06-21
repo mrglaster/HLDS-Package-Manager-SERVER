@@ -8,6 +8,11 @@ CREATE TABLE IF NOT EXISTS engines(
 );	
 
 
+CREATE TABLE IF NOT EXISTS content_types(
+	id BIGSERIAL  PRIMARY KEY,
+	name VARCHAR(6) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS maps(
 	id BIGSERIAL PRIMARY KEY ,
 	engine INT NOT NULL,
@@ -45,11 +50,14 @@ CREATE TABLE IF NOT EXISTS uploaders(
 
 CREATE TABLE IF NOT EXISTS bundles(
 	id BIGSERIAL PRIMARY KEY,
+	content_type INT NOT NULL,
 	name VARCHAR(255) NOT NULL UNIQUE,
-	plugins bigint[] NOT NULL
+	elements bigint[] NOT NULL,
+	FOREIGN KEY (content_type) REFERENCES content_types(id)
 );
 
 INSERT INTO engines (name) VALUES ('gold'), ('source');
+INSERT INTO content_types(name) VALUES ('plugin'), ('map'), ('module');
 
 INSERT INTO uploaders(name, token) VALUES 
 ('Glaster', 'V5dFKftlGLTmbA4XLgNZyGJ1Ftyx9CIY5TQvlVT5vk83BnQEy8pxSVLrQiIjhMZU0CSo291hY0kBly1ILMioUhmcHMKojbPLqhoJnageADBpfcwxbr1k0RhypKHb4HSNihiQgHVVy8C3dc1RhW0zeWcGkmv2oeqsJI1FCiVukGTCgANguVfZknaM9M2vIxkVliIhltoyeq3cAs98ksyxkIiWB0xUWUsUYumdOkYFSUNtXantmciT3WxNR9aaz'),
