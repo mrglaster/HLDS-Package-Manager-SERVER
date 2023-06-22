@@ -248,8 +248,9 @@
     "token": "token",
     "engine": "gold",
     "game": "hl",
+    "type": "plugin"
     "name": "bundle name",
-    "plugins": ["gauss-overheat", "deags-map-manager"]
+    "elements": ["gauss-overheat", "deags-map-manager"]
 }
 ```
 
