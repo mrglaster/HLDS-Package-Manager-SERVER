@@ -21,6 +21,7 @@ public class ServerApplication {
 	}
 
 	public static void main(String[] args) {
+
 		StructureOrganizer.initFileSystem();
 		io.customPrint("Starting the server...");
 		SpringApplication.run(ServerApplication.class, args);

@@ -1,5 +1,7 @@
 package com.hldspm.server.connections.requests.parental_requests;
 
+import com.hldspm.server.constants.MainConstants;
+
 import java.util.Objects;
 
 public class BasicGetRequest {
@@ -43,6 +45,11 @@ public class BasicGetRequest {
         return Objects.equals(engine, "gold") || Objects.equals(engine, "source");
     }
 
+    public static boolean isValidGame(String game){
+        return MainConstants.games.contains(game);
+    }
+
+
     public int engineToId(){
         switch(engine){
             case "gold" -> {
@@ -57,5 +64,4 @@ public class BasicGetRequest {
         }
         return 1;
     }
-
 }

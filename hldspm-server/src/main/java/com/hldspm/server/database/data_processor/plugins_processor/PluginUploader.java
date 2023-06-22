@@ -15,7 +15,9 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Objects;
 
-import static com.hldspm.server.database.data_processor.maps_processor.MapsUploader.isValidGame;
+import static com.hldspm.server.connections.requests.parental_requests.BasicGetRequest.isValidGame;
+
+//TODO написать функции для удаления плагинов с учетом бандлов
 
 public class PluginUploader{
     private static String generatePluginInsertQuery(){

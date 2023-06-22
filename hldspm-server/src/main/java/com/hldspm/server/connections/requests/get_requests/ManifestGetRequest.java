@@ -1,6 +1,6 @@
 package com.hldspm.server.connections.requests.get_requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
+import com.hldspm.server.connections.requests.parental_requests.BasicGetRequest;
 import com.hldspm.server.models.ManifestElementModel;
 
 
@@ -58,6 +58,6 @@ public class ManifestGetRequest{
     }
 
     public  boolean isValidRequest(){
-        return manifestList.size() > 0 && MapsUploader.isValidGame(game) && (Objects.equals(engine, "gold") || Objects.equals(engine, "source"));
+        return manifestList.size() > 0 && BasicGetRequest.isValidGame(game) && (Objects.equals(engine, "gold") || Objects.equals(engine, "source"));
     }
 }

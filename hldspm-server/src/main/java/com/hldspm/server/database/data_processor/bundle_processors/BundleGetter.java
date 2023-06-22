@@ -13,8 +13,10 @@ import com.hldspm.server.models.SingleNameModel;
 import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 
-//TODO Оптимизировать запросы
+// TODO Оптимизировать запросы
+// TODO Сделать загрузку последних версий плагинов
 public class BundleGetter {
+
 
     private static int getNumberByType(String type){
         switch(type){

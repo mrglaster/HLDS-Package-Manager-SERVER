@@ -26,6 +26,6 @@ public class BundleGetRequest extends BasicGetRequest {
     }
 
     public boolean isValidRequest() {
-        return isValidEngine() && MapsUploader.isValidGame(getGame()) && getGame().length() > 0 && isValidType();
+        return isValidEngine() && BasicGetRequest.isValidGame(getGame()) && getGame().length() > 0 && isValidType();
     }
 }

@@ -26,7 +26,7 @@ public class PluginUploadRequest extends BasicUploadRequest {
     }
 
     public boolean isValidRequest(){
-        return this.getData().length() !=0 && this.getName().length() != 0 && this.version.length() != 0 && MapsUploader.isValidGame(this.getGame()) && this.isValidEngine();
+        return this.getData().length() !=0 && this.getName().length() != 0 && this.version.length() != 0 && BasicUploadRequest.isValidGame(this.getGame()) && this.isValidEngine();
     }
 
 

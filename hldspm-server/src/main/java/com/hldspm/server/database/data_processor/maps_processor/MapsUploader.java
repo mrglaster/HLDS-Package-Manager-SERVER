@@ -1,6 +1,7 @@
 package com.hldspm.server.database.data_processor.maps_processor;
 
 import com.hldspm.server.ServerApplication;
+import com.hldspm.server.connections.requests.parental_requests.BasicGetRequest;
 import com.hldspm.server.connections.requests.upload_requests.MapUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.constants.MainConstants;
@@ -15,10 +16,6 @@ import java.util.Base64;
 import java.util.Objects;
 
 public class MapsUploader {
-    public static boolean isValidGame(String game){
-        return MainConstants.games.contains(game);
-    }
-
 
     private static String generateMapUploadQuery(){
         return "INSERT INTO maps(engine, game, name, gamemode) VALUES (?, ?, ?, ?)";
@@ -54,7 +51,7 @@ public class MapsUploader {
 
         if (!UploaderVerification.isValidUploader(uploaderToken)) {
             return StatusResponses.generateBadTokenError();
-        } else if (!isValidGame(game)) {
+        } else if (!BasicGetRequest.isValidGame(game)) {
             return StatusResponses.generateBadGameError(game);
         } else if (!UploadDataChecks.isNameAvailable("map", game, name)) {
             return StatusResponses.generateBadResourceNameError();

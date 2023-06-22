@@ -51,9 +51,12 @@ CREATE TABLE IF NOT EXISTS uploaders(
 CREATE TABLE IF NOT EXISTS bundles(
 	id BIGSERIAL PRIMARY KEY,
 	content_type INT NOT NULL,
+	engine INT NOT NULL,
+	game VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL UNIQUE,
 	elements bigint[] NOT NULL,
-	FOREIGN KEY (content_type) REFERENCES content_types(id)
+	FOREIGN KEY (content_type) REFERENCES content_types(id),
+	FOREIGN KEY (engine) REFERENCES engines(id)
 );
 
 INSERT INTO engines (name) VALUES ('gold'), ('source');
