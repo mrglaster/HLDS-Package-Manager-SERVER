@@ -9,17 +9,27 @@ import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
 import com.hldspm.server.database.mappers.IdRowMapper;
 import com.hldspm.server.models.CountModel;
+import com.hldspm.server.models.SimpleRecordModel;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.hldspm.server.database.data_processor.utils.Utils.wrapWithQuotes;
+
 public class BundleUploader {
     private static final Gson curGson = new GsonBuilder().setPrettyPrinting().create();
 
-    private String generateMapsGettingQuery(BundleUploadRequest request){
+    private static  String generateMapsGettingQuery(BundleUploadRequest request){
         return "SELECT COUNT(*) FROM maps WHERE name IN " + request.getMapsAsDataList();
     }
+
+    private static String generateLatestPluginGetQuery(String game, String name){
+        if (!name.contains("%"))  return "SELECT id, name FROM plugins WHERE game= '" + game + "' AND name LIKE '"+name+"%' ORDER BY time DESC LIMIT 1";
+        return "SELECT id, name FROM plugins WHERE game= '" + game + "' AND name = '"+name+"' ORDER BY time DESC LIMIT 1";
+    }
+
 
     private static boolean isBundleNameAvailable(BundleUploadRequest request){
         String query = "SELECT COUNT(*) FROM bundles WHERE name='" + request.getName() + "';";
@@ -28,12 +38,9 @@ public class BundleUploader {
         return count.get(0).getCount() == 0;
     }
 
-    private static String wrapWithQuotes(Object obj){
-        return "'" + obj.toString() + "'";
-    }
 
     private static String processMapBundle(BundleUploadRequest request){
-       String query = "SELECT id FROM maps WHERE name in " + request.getMapsAsDataList();
+       String query = generateMapsGettingQuery(request);
        RowMapper<CountModel> rowMapper = new IdRowMapper();
        List<CountModel> ids = ServerApplication.jdbcTemplate.query(query, rowMapper);
        JsonObject response = new JsonObject();
@@ -50,14 +57,34 @@ public class BundleUploader {
         arrayLine.append("}'");
         String insertQuery = "INSERT INTO bundles(content_type, engine, game, name, elements) VALUES (" +  request.contentTypeToId() + ", " + request.engineToId() + ", " + wrapWithQuotes(request.getGame()) + ", " + wrapWithQuotes(request.getName()) + ", " + arrayLine + ");";
         ServerApplication.jdbcTemplate.update(insertQuery);
-        response.addProperty("status", 200);
-        response.addProperty("description", "Your bundle was successfully added to the database!");
-        return curGson.toJson(response);
+        return StatusResponses.generateSuccessfulUpload();
     }
 
     private static String processPluginBundle(BundleUploadRequest request){
-        // TODO Доделать
-        return "Sorry Mario, but your princess is in another castle";
+        StringBuilder pluginsIds = new StringBuilder("'{");
+        String game = request.getGame();
+        for (String name : request.getElements()){
+            String getQuery = generateLatestPluginGetQuery(game, name);
+            SimpleRecordModel  elem;
+            try {
+                elem = ServerApplication.jdbcTemplate.queryForObject(
+                        getQuery,
+                        new Object[]{},
+                        new BeanPropertyRowMapper<>(SimpleRecordModel.class));
+
+            } catch (Exception e){
+                return StatusResponses.generateBadRequestErr();
+            }
+            if (elem != null) {
+                pluginsIds.append(elem.getId()).append(',');
+            }
+
+        }
+        pluginsIds.deleteCharAt(pluginsIds.length() - 1);
+        pluginsIds.append("}'");
+        String insertQuery = "INSERT INTO bundles(content_type, engine, game, name, elements) VALUES (" +  request.contentTypeToId() + ", " + request.engineToId() + ", " + wrapWithQuotes(request.getGame()) + ", " + wrapWithQuotes(request.getName()) + ", " + pluginsIds + ");";
+        ServerApplication.jdbcTemplate.update(insertQuery);
+        return StatusResponses.generateSuccessfulUpload();
     }
 
     public static String processBundleUpload(BundleUploadRequest request){
