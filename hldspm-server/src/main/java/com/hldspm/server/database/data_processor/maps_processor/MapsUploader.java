@@ -1,10 +1,8 @@
 package com.hldspm.server.database.data_processor.maps_processor;
-
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.connections.requests.parental_requests.BasicGetRequest;
 import com.hldspm.server.connections.requests.upload_requests.MapUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
-import com.hldspm.server.constants.MainConstants;
 import com.hldspm.server.database.data_processor.uploads_checks.UploadDataChecks;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;

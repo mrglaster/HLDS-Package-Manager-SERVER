@@ -1,15 +1,9 @@
 package com.hldspm.server.database.data_processor.maps_processor;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.database.mappers.CountRowMapper;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
-import com.hldspm.server.models.CountModel;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.util.List;
 
 public class MapsGetter {
 
@@ -20,11 +14,9 @@ public class MapsGetter {
     }
 
     /**Checks if there is the specified map in the database*/
-    protected boolean availabilityCheck(String game, String name){
+    protected boolean hasMap(String game, String name){
         String sql = this.getIdentificationQuery(game, name);
-        RowMapper<CountModel> rowMapper = new CountRowMapper();
-        List<CountModel> count = ServerApplication.jdbcTemplate.query(sql, rowMapper);
-        return count.get(0).getCount() > 0;
+        return ServerApplication.jdbcTemplate.queryForObject(sql, Integer.class) != 0;
     }
 
     /**Generates FTP-link for the map*/
@@ -36,7 +28,7 @@ public class MapsGetter {
     public String processGetting(String game, String name, String engine){
         Gson curGson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject response = new JsonObject();
-        if (this.availabilityCheck(game, name)){
+        if (this.hasMap(game, name)){
             response.addProperty("status", 200);
             response.addProperty("link", generateFtpLink(engine, game, name));
             return curGson.toJson(response);

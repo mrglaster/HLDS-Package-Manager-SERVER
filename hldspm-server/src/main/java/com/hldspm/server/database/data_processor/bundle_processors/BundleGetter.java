@@ -6,10 +6,8 @@ import com.google.gson.JsonObject;
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.connections.requests.get_requests.BundleGetRequest;
 import com.hldspm.server.database.mappers.BundleRowMapper;
-import com.hldspm.server.database.mappers.SingleNameRowMapper;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
 import com.hldspm.server.models.BundleModel;
-import com.hldspm.server.models.SingleNameModel;
 import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 
@@ -52,11 +50,11 @@ public class BundleGetter {
         String resources = bundle.get(0).getPluginIds().replace('{', '(').replace('}', ')').replace(",", ", ");
         String searching = request.getType() + 's';
         String newQuery = "SELECT name FROM " + searching + " WHERE id IN " + resources;
-        RowMapper<SingleNameModel> snRm = new SingleNameRowMapper();
-        List<SingleNameModel> names = ServerApplication.jdbcTemplate.query(newQuery, snRm);
+
+        List<String> names = ServerApplication.jdbcTemplate.queryForList(newQuery, String.class);
         JsonArray elements = new JsonArray();
-        for (SingleNameModel model : names){
-            elements.add(FtpConstants.FTP_LINK_INIT  + request.getEngine() + '/' + searching + '/' + request.getGame() + '/' + model.toString() + ".tar.gz" );
+        for (String model : names){
+            elements.add(FtpConstants.FTP_LINK_INIT  + request.getEngine() + '/' + searching + '/' + request.getGame() + '/' + model + ".tar.gz" );
         }
         response.addProperty("status", 200);
         response.add("elements", elements);

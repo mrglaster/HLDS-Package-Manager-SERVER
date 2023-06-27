@@ -1,5 +1,4 @@
 package com.hldspm.server.database.data_processor.bundle_processors;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -7,11 +6,8 @@ import com.hldspm.server.ServerApplication;
 import com.hldspm.server.connections.requests.upload_requests.BundleUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
-import com.hldspm.server.database.mappers.IdRowMapper;
-import com.hldspm.server.models.CountModel;
 import com.hldspm.server.models.SimpleRecordModel;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,16 +29,13 @@ public class BundleUploader {
 
     private static boolean isBundleNameAvailable(BundleUploadRequest request){
         String query = "SELECT COUNT(*) FROM bundles WHERE name='" + request.getName() + "';";
-        RowMapper<CountModel> rowMapper = new IdRowMapper();
-        List<CountModel> count = ServerApplication.jdbcTemplate.query(query, rowMapper);
-        return count.get(0).getCount() == 0;
+        return ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) == 0;
     }
 
 
     private static String processMapBundle(BundleUploadRequest request){
        String query = generateMapsGettingQuery(request);
-       RowMapper<CountModel> rowMapper = new IdRowMapper();
-       List<CountModel> ids = ServerApplication.jdbcTemplate.query(query, rowMapper);
+       List<Integer> ids = ServerApplication.jdbcTemplate.queryForList(query, Integer.class);
        JsonObject response = new JsonObject();
        if (ids.size() != request.getElements().size()){
            response.addProperty("status", 400);
@@ -50,8 +43,8 @@ public class BundleUploader {
            return curGson.toJson(response);
        }
        StringBuilder arrayLine = new StringBuilder("'{");
-       for (CountModel i : ids){
-           arrayLine.append(i.getCount()).append(',');
+       for (int i : ids){
+           arrayLine.append(i).append(',');
        }
         arrayLine.deleteCharAt(arrayLine.length() - 1);
         arrayLine.append("}'");

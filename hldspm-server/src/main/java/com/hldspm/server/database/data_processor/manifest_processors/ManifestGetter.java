@@ -7,11 +7,9 @@ import com.google.gson.JsonObject;
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.connections.requests.get_requests.ManifestGetRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
-import com.hldspm.server.database.mappers.SingleNameRowMapper;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
 import com.hldspm.server.models.ManifestElementModel;
-import com.hldspm.server.models.SingleNameModel;
-import org.springframework.jdbc.core.RowMapper;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -29,9 +27,9 @@ public class ManifestGetter {
                     queryBuilder.append("SELECT name FROM maps WHERE name='").append(element.getName()).append("';");
             case "plugin" -> {
                 if (element.getName().contains("%")) {
-                    queryBuilder.append("SELECT * FROM plugins WHERE game='").append(game).append("' AND name='").append(element.getName()).append("';");
+                    queryBuilder.append("SELECT name FROM plugins WHERE game='").append(game).append("' AND name='").append(element.getName()).append("';");
                 } else {
-                    queryBuilder.append("SELECT * FROM plugins WHERE game='").append(game).append("' AND name LIKE '").append(element.getName()).append("%' ORDER BY time DESC LIMIT 1;");
+                    queryBuilder.append("SELECT name FROM plugins WHERE game='").append(game).append("' AND name LIKE '").append(element.getName()).append("%' ORDER BY time DESC LIMIT 1;");
                 }
             }
         }
@@ -42,11 +40,10 @@ public class ManifestGetter {
 
     private static String getFtpServerLink(String game, String engine, ManifestElementModel element) {
         String query = getManifestElementQuery(game, element);
-        RowMapper<SingleNameModel> rowMapper = new SingleNameRowMapper();
-        List<SingleNameModel> count = ServerApplication.jdbcTemplate.query(query, rowMapper);
+        List<String> count = ServerApplication.jdbcTemplate.queryForList(query, String.class);
         String currentName;
         try {
-            currentName = count.get(0).getName();
+            currentName = count.get(0);
         } catch (Exception e) {
             return "None";
         }

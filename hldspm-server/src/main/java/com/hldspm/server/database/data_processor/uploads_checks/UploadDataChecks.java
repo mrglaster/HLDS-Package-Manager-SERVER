@@ -1,12 +1,6 @@
 package com.hldspm.server.database.data_processor.uploads_checks;
-
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.constants.MainConstants;
-import com.hldspm.server.database.mappers.CountRowMapper;
-import com.hldspm.server.models.CountModel;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.util.List;
 
 public class UploadDataChecks {
 
@@ -35,16 +29,11 @@ public class UploadDataChecks {
 
     public static boolean isNameAvailable(String uploadType, String game, String name){
         if (!isValidGame(game) || !isValidUploadType(uploadType)) return false;
-        String query = "";
-        switch(uploadType){
-            case "plugin":
-                query = generatePluginCheckQuery(name, game);
-                break;
-            case "map":
-                query = generateMapCheckQuery(name, game);
-        }
-        RowMapper<CountModel> rowMapper = new CountRowMapper();
-        List<CountModel> count = ServerApplication.jdbcTemplate.query(query, rowMapper);
-        return count.get(0).getCount() == 0;
+        String query = switch (uploadType) {
+            case "plugin" -> generatePluginCheckQuery(name, game);
+            case "map" -> generateMapCheckQuery(name, game);
+            default -> "";
+        };
+        return ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) == 0;
     }
 }

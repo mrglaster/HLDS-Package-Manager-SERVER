@@ -1,4 +1,5 @@
 package com.hldspm.server;
+import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
 import com.hldspm.server.io.io;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class ServerApplication {
 
 	public static JdbcTemplate jdbcTemplate;
+	private static volatile boolean isShuttingDown = false;
 
 	/**Initializing JdbcTemplate to work with the database*/
 	@Autowired
@@ -20,10 +22,22 @@ public class ServerApplication {
 		ServerApplication.jdbcTemplate = jdbcTemplate;
 	}
 
-	public static void main(String[] args) {
 
+	private static void processShutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (!isShuttingDown) {
+				isShuttingDown = true;
+				io.customPrint("Generating the repo dump");
+				DumpCreator.makeDump();
+			}
+		}));
+	}
+
+	public static void main(String[] args) {
 		StructureOrganizer.initFileSystem();
 		io.customPrint("Starting the server...");
 		SpringApplication.run(ServerApplication.class, args);
+		io.customPrint("The server is running");
+		processShutdownHook();
 	}
 }
