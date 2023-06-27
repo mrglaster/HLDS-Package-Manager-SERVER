@@ -47,6 +47,7 @@ public class DumpCreator {
         return ServerApplication.jdbcTemplate.queryForList(query, new Object[]{tableName}, String.class);
     }
 
+    /**Writes dump for one table*/
     private static void writeTableDump(PrintWriter writer, String tableName, List<String> columnNames, List<List<Object>> rows) {
         writer.println("CREATE TABLE " + tableName + " (");
         for (int i = 0; i < columnNames.size(); i++) {
