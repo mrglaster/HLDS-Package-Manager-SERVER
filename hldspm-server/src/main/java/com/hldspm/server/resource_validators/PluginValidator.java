@@ -21,6 +21,7 @@ public class PluginValidator extends GeneralValidator{
         }
     }
 
+    // TODO: Улучшить
     public boolean isValidPlugin() throws IOException {
         if (super.tarInputStream == null || !isBase64(base64String)) return false;
         if (!super.isTarGz()) return false;
