@@ -30,7 +30,7 @@ public class DumpCreator {
                     }
                     return row;
                 });
-                writeTableDump(writer, tableName, columnNames, rows);
+                writeTableDump(writer, tableName, rows);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,21 +48,19 @@ public class DumpCreator {
     }
 
     /**Writes dump for one table*/
-    private static void writeTableDump(PrintWriter writer, String tableName, List<String> columnNames, List<List<Object>> rows) {
-        writer.println("CREATE TABLE " + tableName + " (");
-        for (int i = 0; i < columnNames.size(); i++) {
-            writer.print(columnNames.get(i));
-            writer.print(" ");
-            writer.print(getColumnType(tableName, columnNames.get(i)));
-            if (i < columnNames.size() - 1) {
-                writer.print(",");
-            }
-            writer.println();
-        }
-        writer.println(");");
+    private static void writeTableDump(PrintWriter writer, String tableName, List<List<Object>> rows) {
         for (List<Object> row : rows) {
-            writer.print("INSERT INTO " + tableName + " VALUES (");
-            for (int i = 0; i < row.size(); i++) {
+            String currentTableName = "";
+            switch (tableName){
+                case "maps"-> currentTableName = "maps(engine, game, name, gamemode)";
+                case "plugins" -> currentTableName = "plugins(engine, time, game, name)";
+                case "bundles" -> currentTableName = "bundles(content_type, engine, elements, game, name)";
+                case "engines" -> currentTableName = "engines(name)";
+                case "content_types" -> currentTableName = "content_types(name)";
+                case "uploaders" -> currentTableName = "uploaders(name, token)";
+            }
+            writer.print("INSERT INTO " + currentTableName + " VALUES (");
+            for (int i = 1; i < row.size(); i++) {
                 Object value = row.get(i);
                 if (value == null) {
                     writer.print("NULL");
@@ -77,13 +75,8 @@ public class DumpCreator {
             }
             writer.println(");");
         }
-        writer.println();
     }
 
-    private static String getColumnType(String tableName, String columnName) {
-        String query = "SELECT data_type FROM information_schema.columns WHERE table_name = ? AND column_name = ?";
-        return ServerApplication.jdbcTemplate.queryForObject(query, new Object[]{tableName, columnName}, String.class);
-    }
 
 
     public static void makeDump(){

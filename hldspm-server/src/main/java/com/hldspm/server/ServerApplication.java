@@ -1,5 +1,6 @@
 package com.hldspm.server;
 import com.hldspm.server.database.dumper.DumpCreator;
+import com.hldspm.server.database.dumper.DumpReader;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
 import com.hldspm.server.io.io;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class ServerApplication {
 		StructureOrganizer.initFileSystem();
 		io.customPrint("Starting the server...");
 		SpringApplication.run(ServerApplication.class, args);
+		DumpReader.processDumps();
 		io.customPrint("The server is running");
 		processShutdownHook();
 	}

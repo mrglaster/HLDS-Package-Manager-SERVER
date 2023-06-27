@@ -17,7 +17,8 @@ public class ArchiveProcessing {
         io.customPrint("Archiving the repo's files");
         try {
             FileOutputStream fos = new FileOutputStream(archiveName);
-            TarArchiveOutputStream tarOut = new TarArchiveOutputStream(fos);
+            GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(fos);
+            TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
             addFilesToTar(tarOut, folderPath, "");
             tarOut.close();
             fos.close();
