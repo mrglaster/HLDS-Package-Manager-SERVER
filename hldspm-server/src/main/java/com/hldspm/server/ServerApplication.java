@@ -28,8 +28,13 @@ public class ServerApplication {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			if (!isShuttingDown) {
 				isShuttingDown = true;
-				io.customPrint("Generating the repo dump");
-				DumpCreator.makeDump();
+				io.customPrint("Shutting down the server...");
+				if(DumpCreator.hasChanges) {
+					io.customPrint("Generating the repo dump");
+					DumpCreator.makeDump();
+				} else {
+					io.customPrint("There weren't changes in the database. Dump won't be created");
+				}
 			}
 		}));
 	}

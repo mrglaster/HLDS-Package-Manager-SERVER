@@ -5,6 +5,7 @@ import com.hldspm.server.connections.requests.upload_requests.PluginUploadReques
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.data_processor.uploads_checks.UploadDataChecks;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
+import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
 import com.hldspm.server.resource_validators.PluginValidator;
 
@@ -75,6 +76,7 @@ public class PluginUploader{
             return StatusResponses.generateBadRequestErr();
         }
         saveUploadedPlugin(request);
+        DumpCreator.hasChanges = true;
         return StatusResponses.generateSuccessfulUpload();
     }
 

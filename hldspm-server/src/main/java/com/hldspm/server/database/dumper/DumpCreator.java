@@ -12,10 +12,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class DumpCreator {
-
+    public static boolean hasChanges = true;
     private static void dumpAllTables(String dumpFilePath) {
         io.customPrint("Saving the database information");
         List<String> tableNames = getAllTableNames();
@@ -50,30 +51,30 @@ public class DumpCreator {
     /**Writes dump for one table*/
     private static void writeTableDump(PrintWriter writer, String tableName, List<List<Object>> rows) {
         for (List<Object> row : rows) {
-            String currentTableName = "";
-            switch (tableName){
-                case "maps"-> currentTableName = "maps(engine, game, name, gamemode)";
-                case "plugins" -> currentTableName = "plugins(engine, time, game, name)";
-                case "bundles" -> currentTableName = "bundles(content_type, engine, elements, game, name)";
-                case "engines" -> currentTableName = "engines(name)";
-                case "content_types" -> currentTableName = "content_types(name)";
-                case "uploaders" -> currentTableName = "uploaders(name, token)";
-            }
-            writer.print("INSERT INTO " + currentTableName + " VALUES (");
-            for (int i = 1; i < row.size(); i++) {
-                Object value = row.get(i);
-                if (value == null) {
-                    writer.print("NULL");
-                } else if (value instanceof Number) {
-                    writer.print(value);
-                } else {
-                    writer.print("'" + value.toString().replace("'", "''") + "'");
+            if (!Objects.equals(tableName, "engines") && !Objects.equals(tableName, "content_types")){
+                String currentTableName = "";
+                switch (tableName){
+                    case "maps"-> currentTableName = "maps(engine, game, name, gamemode)";
+                    case "plugins" -> currentTableName = "plugins(engine, time, game, name)";
+                    case "bundles" -> currentTableName = "bundles(content_type, engine, elements, game, name)";
+                    case "uploaders" -> currentTableName = "uploaders(name, token)";
                 }
-                if (i < row.size() - 1) {
-                    writer.print(",");
+                writer.print("INSERT INTO " + currentTableName + " VALUES (");
+                for (int i = 1; i < row.size(); i++) {
+                    Object value = row.get(i);
+                    if (value == null) {
+                        writer.print("NULL");
+                    } else if (value instanceof Number) {
+                        writer.print(value);
+                    } else {
+                        writer.print("'" + value.toString().replace("'", "''") + "'");
+                    }
+                    if (i < row.size() - 1) {
+                        writer.print(",");
+                    }
                 }
+                writer.println(");");
             }
-            writer.println(");");
         }
     }
 

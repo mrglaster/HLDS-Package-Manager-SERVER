@@ -6,10 +6,10 @@ import java.io.File;
 
 
 
-// TODO Переписать модуль к чертовой матери
+// TODO Переписать модуль
 
 public class StructureOrganizer {
-    private static String[] mods = {"cs", "cscz", "dod", "hl", "op4", "universal"};
+    private static final String[] mods = {"cs", "cscz", "dod", "hl", "op4", "universal"};
 
 
     /**Checks if the file structure is valid*/
@@ -20,7 +20,7 @@ public class StructureOrganizer {
                 "gold"
         };
 
-        String[] goldsourceSubfolders = {
+        String[] goldSourceSubfolders = {
                 "maps",
                 "plugins",
                 "modules"
@@ -31,14 +31,6 @@ public class StructureOrganizer {
                 "win"
         };
 
-        String[] gameFolders = {
-                "cs",
-                "cscz",
-                "dod",
-                "hl",
-                "op4",
-                "universal"
-        };
 
         File rootFolder = new File(rootPath);
         if (!rootFolder.isDirectory()) {
@@ -50,7 +42,7 @@ public class StructureOrganizer {
         }
 
         File goldsourceFolder = new File(rootFolder, "gold");
-        if (!checkSubfolders(goldsourceFolder, goldsourceSubfolders)) {
+        if (!checkSubfolders(goldsourceFolder, goldSourceSubfolders)) {
             return false;
         }
 
@@ -59,10 +51,11 @@ public class StructureOrganizer {
             return false;
         }
 
-        File linFolder = new File(modulesFolder, "lin");
-        File winFolder = new File(modulesFolder, "win");
-        return checkSubfolders(linFolder, gameFolders)
-                && checkSubfolders(winFolder, gameFolders);
+        File linFolder = new File(modulesFolder, moduleSubfolders[0]);
+        File winFolder = new File(modulesFolder, moduleSubfolders[1]);
+
+        return checkSubfolders(linFolder, mods)
+                && checkSubfolders(winFolder, mods);
     }
 
     /**Checks subfolders in the root folders */
@@ -97,53 +90,44 @@ public class StructureOrganizer {
     }
 
     public static void createFtpFilesystem(String rootPath) {
-        File rootFolder = new File(rootPath);
-
-        // Создание корневых папок
-        File sourceFolder = new File(rootFolder, "source");
-        sourceFolder.mkdirs();
-
-        File goldSourceFolder = new File(rootFolder, "gold");
-        goldSourceFolder.mkdirs();
-
-        // Создание папки maps в папке goldsource
-        File mapsFolder = new File(goldSourceFolder, "maps");
-        mapsFolder.mkdirs();
-
-        // Создание папки plugins в папке goldsource
-        File pluginsFolder = new File(goldSourceFolder, "plugins");
-        pluginsFolder.mkdirs();
-
-        // Создание папки modules в папке goldsource
-        File modulesFolder = new File(goldSourceFolder, "modules");
-        modulesFolder.mkdirs();
-
-        // Создание папок внутри goldsource/maps
-        createSubfolders(mapsFolder);
-
-        // Создание папок внутри goldsource/plugins
-        createSubfolders(pluginsFolder);
-
-        // Создание папок внутри goldsource/modules
-        createSubfolders(modulesFolder);
+        if (!checkFilesStructure()) {
+            File rootFolder = new File(rootPath);
+            File sourceFolder = new File(rootFolder, "source");
+            sourceFolder.mkdirs();
+            File goldSourceFolder = new File(rootFolder, "gold");
+            goldSourceFolder.mkdirs();
+            File mapsFolder = new File(goldSourceFolder, "maps");
+            mapsFolder.mkdirs();
+            File pluginsFolder = new File(goldSourceFolder, "plugins");
+            pluginsFolder.mkdirs();
+            File modulesFolder = new File(goldSourceFolder, "modules");
+            modulesFolder.mkdirs();
+            createSubfolders(mapsFolder);
+            createSubfolders(pluginsFolder);
+            createSubfolders(modulesFolder);
+        }
     }
 
     public static void createSubfolders(File parentFolder) {
-        for (String subfolder : mods) {
-            File subfolderFile = new File(parentFolder, subfolder);
+        if (parentFolder.getName().equals("modules")){
+            File subfolderFile = new File(parentFolder, "win");
             subfolderFile.mkdirs();
+            File newer = new File(parentFolder, "lin");
+            newer.mkdirs();
+            createSubfolders(subfolderFile);
+            createSubfolders(newer);
+        } else {
+            for (String subfolder : mods) {
+                File subfolderFile = new File(parentFolder, subfolder);
+                subfolderFile.mkdirs();
+            }
         }
     }
 
     public static void initFileSystem(){
         io.customPrint("Checking the FTP-server file structure");
-        if (!StructureOrganizer.checkFilesStructure()){
-            io.customPrint("File structure is invalid!");
-            io.customPrint("Creating the file system");
-            StructureOrganizer.createFtpFilesystem("files");
-            io.customPrint("File system creation is done!");
-        }
-        io.customPrint("File system is valid");
+        io.customPrint("Analyzing the file structure");
+        StructureOrganizer.createFtpFilesystem("files");
     }
 
 

@@ -33,7 +33,7 @@ public class DumpReader {
     }
 
     private static void unzipStorage(File archive) {
-        io.customPrint("Unpacking the storage backup for " + archive.getName());
+        io.customPrint("Unpacking the storage backup from:  " + archive.getName());
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(archive));
              GzipCompressorInputStream gzis = new GzipCompressorInputStream(bis);
              TarArchiveInputStream taris = new TarArchiveInputStream(gzis)) {

@@ -6,6 +6,7 @@ import com.hldspm.server.ServerApplication;
 import com.hldspm.server.connections.requests.upload_requests.BundleUploadRequest;
 import com.hldspm.server.connections.responses.StatusResponses;
 import com.hldspm.server.database.data_processor.uploads_checks.UploaderVerification;
+import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.models.SimpleRecordModel;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
@@ -50,6 +51,7 @@ public class BundleUploader {
         arrayLine.append("}'");
         String insertQuery = "INSERT INTO bundles(content_type, engine, game, name, elements) VALUES (" +  request.contentTypeToId() + ", " + request.engineToId() + ", " + wrapWithQuotes(request.getGame()) + ", " + wrapWithQuotes(request.getName()) + ", " + arrayLine + ");";
         ServerApplication.jdbcTemplate.update(insertQuery);
+        DumpCreator.hasChanges = true;
         return StatusResponses.generateSuccessfulUpload();
     }
 
@@ -93,6 +95,7 @@ public class BundleUploader {
         if (Objects.equals(request.getType(), "plugin")){
             return processPluginBundle(request);
         }
+
         return processMapBundle(request);
     }
 }
