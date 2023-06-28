@@ -31,11 +31,11 @@ public class StatusResponses {
     }
 
     public static String generateUnknownEngineError(String engine) {
-        return generateResponse(400, "Unknown engine: " + engine);
+        return generateResponse(422, "Unknown engine: " + engine);
     }
 
     public static String generateInvalidResourceDataErr() {
-        return generateResponse(400, "Invalid resource data!");
+        return generateResponse(422, "Invalid resource data!");
     }
 
     public static String generateSuccessfulUpload() {
@@ -47,6 +47,6 @@ public class StatusResponses {
     }
 
     public static String generateBadManifestData() {
-        return generateError(400, "Bad manifest data");
+        return generateError(422, "Bad manifest data");
     }
 }

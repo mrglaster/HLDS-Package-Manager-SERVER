@@ -6,31 +6,16 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.springframework.dao.DataAccessException;
-
 import java.io.*;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+// TODO побайтовая проверка файлов
+
 public class DumpReader {
     private static final File ftpFiles = new File("files");
 
-    private static String calculateMd5Hash(String filePath) throws IOException {
-        byte[] data = Files.readAllBytes(Paths.get(filePath));
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(data);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        return new BigInteger(1, hash).toString(16);
-    }
 
     private static void unzipStorage(File archive) {
         io.customPrint("Unpacking the storage backup from:  " + archive.getName());
@@ -39,7 +24,7 @@ public class DumpReader {
              TarArchiveInputStream taris = new TarArchiveInputStream(gzis)) {
             TarArchiveEntry entry;
             while ((entry = taris.getNextTarEntry()) != null) {
-                File outputFile = new File("files", entry.getName());
+                File outputFile = new File(ftpFiles, entry.getName());
                 if (entry.isDirectory()) {
                     outputFile.mkdirs();
                 } else {
@@ -111,7 +96,6 @@ public class DumpReader {
                     }
                 }
             }
-
             tais.close();
             gzis.close();
             bis.close();
@@ -134,21 +118,11 @@ public class DumpReader {
             return;
         }
 
-        ArrayList<String> mdHashes = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (File file : files) {
             executorService.execute(() -> {
-                try {
-                    //TODO использовать другой способ определения дубликатов
-                    String hash = calculateMd5Hash(file.getPath());
-                    if (mdHashes.contains(hash) || !file.getName().contains("tar.gz")) {
-                        return;
-                    }
-                    mdHashes.add(hash);
-                    processDumpFile(file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                //TODO найти  способ определения дубликатов
+                processDumpFile(file);
             });
         }
 

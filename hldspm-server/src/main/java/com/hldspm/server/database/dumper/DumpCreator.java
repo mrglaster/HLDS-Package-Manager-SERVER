@@ -1,8 +1,6 @@
 package com.hldspm.server.database.dumper;
-
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.io.io;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -78,8 +76,6 @@ public class DumpCreator {
         }
     }
 
-
-
     public static void makeDump(){
         String dumpFolderName = "dumps";
         String sqlName = UUID.randomUUID() + ".sql";
@@ -103,9 +99,4 @@ public class DumpCreator {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
 }
