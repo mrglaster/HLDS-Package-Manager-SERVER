@@ -10,10 +10,13 @@ import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.models.SimpleRecordModel;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static com.hldspm.server.database.data_processor.utils.Utils.wrapWithQuotes;
+
+//TODO огпределить что использовать лучше, имена или id
 
 public class BundleUploader {
     private static final Gson curGson = new GsonBuilder().setPrettyPrinting().create();
@@ -58,20 +61,25 @@ public class BundleUploader {
     private static String processPluginBundle(BundleUploadRequest request){
         StringBuilder pluginsIds = new StringBuilder("'{");
         String game = request.getGame();
-        for (String name : request.getElements()){
-            String getQuery = generateLatestPluginGetQuery(game, name);
-            SimpleRecordModel  elem;
-            try {
-                elem = ServerApplication.jdbcTemplate.queryForObject(
-                        getQuery,
-                        new Object[]{},
-                        new BeanPropertyRowMapper<>(SimpleRecordModel.class));
+        List<String> processedNames = new ArrayList<>();
 
-            } catch (Exception e){
-                return StatusResponses.generateBadRequestErr();
-            }
-            if (elem != null) {
-                pluginsIds.append(elem.getId()).append(',');
+        for (String name : request.getElements()){
+            if (!processedNames.contains(name)){
+                processedNames.add(name);
+                String getQuery = generateLatestPluginGetQuery(game, name);
+                SimpleRecordModel  elem;
+                try {
+                    elem = ServerApplication.jdbcTemplate.queryForObject(
+                            getQuery,
+                            new Object[]{},
+                            new BeanPropertyRowMapper<>(SimpleRecordModel.class));
+
+                } catch (Exception e){
+                    return StatusResponses.generateBadRequestErr();
+                }
+                if (elem != null) {
+                    pluginsIds.append(elem.getId()).append(',');
+                }
             }
 
         }

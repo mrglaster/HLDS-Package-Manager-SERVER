@@ -11,6 +11,7 @@ import com.hldspm.server.ftp_server.cfg.FtpConstants;
 import com.hldspm.server.models.ManifestElementModel;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,16 +62,19 @@ public class ManifestGetter {
         JsonArray plugins = new JsonArray();
         JsonArray maps = new JsonArray();
         JsonArray errors = new JsonArray();
-
+        List<String> processedElements = new ArrayList<>();
         for (ManifestElementModel element : request.getManifestList()) {
-            String currentLink = getFtpServerLink(game, engine, element);
-            if (currentLink.equals("None")) {
-                errors.add(element.getName());
-            } else {
-                if (Objects.equals(element.getType(), "map"))
-                    maps.add(currentLink);
-                else
-                    plugins.add(currentLink);
+            if (!processedElements.contains(element.getName())) {
+                String currentLink = getFtpServerLink(game, engine, element);
+                if (currentLink.equals("None")) {
+                    errors.add(element.getName());
+                } else {
+                    if (Objects.equals(element.getType(), "map"))
+                        maps.add(currentLink);
+                    else
+                        plugins.add(currentLink);
+                }
+                processedElements.add(element.getName());
             }
         }
 

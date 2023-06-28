@@ -1,5 +1,7 @@
 package com.hldspm.server.connections.requests.upload_requests;
 import com.hldspm.server.connections.requests.parental_requests.BasicGetRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,10 +28,15 @@ public class BundleUploadRequest extends BasicGetRequest {
     public String getMapsAsDataList(){
         StringBuilder sb = new StringBuilder();
         sb.append("(");
+        List<String> usedNames = new ArrayList<>();
         for (int i = 0; i <elements.size(); i++) {
-            sb.append("'").append(elements.get(i)).append("'");
-            if (i < elements.size() - 1) {
-                sb.append(", ");
+            String currentElem = elements.get(i);
+            if (!usedNames.contains(currentElem)){
+                sb.append("'").append(currentElem).append("'");
+                usedNames.add(currentElem);
+                if (i < elements.size() - 1) {
+                    sb.append(", ");
+                }
             }
         }
         sb.append(")");
