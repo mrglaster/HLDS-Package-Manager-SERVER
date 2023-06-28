@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class DumpCreator {
-    public static boolean hasChanges = true;
+    public static boolean hasChanges = false;
     private static void dumpAllTables(String dumpFilePath) {
         io.customPrint("Saving the database information");
         List<String> tableNames = getAllTableNames();
