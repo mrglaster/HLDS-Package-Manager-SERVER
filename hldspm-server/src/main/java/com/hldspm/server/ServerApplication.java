@@ -1,6 +1,8 @@
 package com.hldspm.server;
+import com.hldspm.server.cfg_reader.CfgReader;
 import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.database.dumper.DumpReader;
+import com.hldspm.server.database.initializer.DatabaseInitializer;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
 import com.hldspm.server.io.io;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class ServerApplication {
 
 	public static JdbcTemplate jdbcTemplate;
+	public static CfgReader configure;
+
 	private static volatile boolean isShuttingDown = false;
 
 	/**Initializing JdbcTemplate to work with the database*/
@@ -40,11 +44,20 @@ public class ServerApplication {
 	}
 
 	public static void main(String[] args) {
+		configure = new CfgReader();
+		configure.processCfgRead();
 		StructureOrganizer.initFileSystem();
 		io.customPrint("Starting the server...");
 		SpringApplication.run(ServerApplication.class, args);
+
+
+		if (Integer.parseInt(configure.getCreateTableStructureFlag()) == 1){
+			io.customPrint("Initializing database...");
+			DatabaseInitializer.processDatabaseInit();
+		}
 		DumpReader.processDumps();
 		io.customPrint("The server is running");
 		processShutdownHook();
+
 	}
 }
