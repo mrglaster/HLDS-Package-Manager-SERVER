@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+/**Class for bundle getting results from the database*/
 public class BundleRowMapper implements RowMapper<BundleModel> {
     @Override
     public BundleModel mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -1,8 +1,8 @@
 package com.hldspm.server.connections.requests.upload_requests;
-
 import com.hldspm.server.connections.requests.parental_requests.BasicUploadRequest;
-import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
 
+
+/**Class describing the plugin upload request*/
 public class PluginUploadRequest extends BasicUploadRequest {
     private String version;
 

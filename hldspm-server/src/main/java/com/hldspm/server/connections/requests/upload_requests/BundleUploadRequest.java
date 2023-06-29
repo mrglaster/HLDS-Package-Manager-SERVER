@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**Class describing the bundle upload request*/
 public class BundleUploadRequest extends BasicGetRequest {
     private List<String> elements;
     private String token;

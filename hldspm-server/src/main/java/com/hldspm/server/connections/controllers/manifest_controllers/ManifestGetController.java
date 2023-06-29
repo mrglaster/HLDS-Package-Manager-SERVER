@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ManifestGetController {
+    /**Manifest get routing*/
     @GetMapping(value = "/manifest", produces="application/json")
     public String getManifestData(@RequestBody ManifestGetRequest request){
         return ManifestGetter.processManifestGetting(request);

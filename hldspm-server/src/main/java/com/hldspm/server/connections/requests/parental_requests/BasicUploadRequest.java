@@ -1,7 +1,7 @@
 package com.hldspm.server.connections.requests.parental_requests;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**Base class for upload requests containing the main parameters*/
 public class BasicUploadRequest extends BasicGetRequest{
 
     @JsonProperty("token")

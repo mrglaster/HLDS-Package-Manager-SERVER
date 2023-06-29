@@ -12,9 +12,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
+//TODO Избавиться от RowMapper
+
+/**Provides functions for plugins getting*/
 public class PluginGetter extends MapsGetter{
 
-
+    /**Generates SQL query for plugin getting*/
     @Override
     protected String getIdentificationQuery(String game, String name) {
         if (name.contains("%")){
@@ -23,11 +26,13 @@ public class PluginGetter extends MapsGetter{
         return "SELECT * FROM plugins WHERE game= '" + game + "' AND name LIKE '"+name+"%' ORDER BY time DESC LIMIT 1;";
     }
 
+    /**Generates FTP-link for plugin*/
     @Override
     protected String generateFtpLink(String engine, String game, String name) {
         return FtpConstants.FTP_LINK_INIT + engine + '/' + "plugins/"+game+'/'+name+".tar.gz";
     }
 
+    /**Processes plugin getting*/
     @Override
     public String processGetting(String game, String name, String engine){
         Gson curGson = new GsonBuilder().setPrettyPrinting().create();

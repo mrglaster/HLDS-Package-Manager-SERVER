@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BundleGetController {
+
+    /**Bundle getting routing*/
     @GetMapping(value={"/bundle", "bundle"}, produces = "application/json")
     public String getBundleData(@RequestBody BundleGetRequest request){
         return BundleGetter.processBundleGetting(request);

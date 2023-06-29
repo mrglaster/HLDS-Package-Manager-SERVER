@@ -1,7 +1,7 @@
 package com.hldspm.server.database.dumper;
 
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.io.io;
+import com.hldspm.server.io.custom_pring.io;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class DumpReader {
     private static final File ftpFiles = new File("files");
 
-
+    /**Unpacks the storage archive*/
     private static void unzipStorage(File archive) {
         io.customPrint("Unpacking the storage backup from:  " + archive.getName());
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(archive));
@@ -43,6 +43,7 @@ public class DumpReader {
         }
     }
 
+    /**Restores data in the database*/
     private static void restoreDb(File sqlFile) {
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(sqlFile))) {
@@ -65,6 +66,7 @@ public class DumpReader {
         }
     }
 
+    /**Reads a single dump/backup file*/
     private static void processDumpFile(File archive) {
         File outArchive = null;
         File outSql = null;
@@ -109,6 +111,7 @@ public class DumpReader {
         }
     }
 
+    /**Reads all the dump/backup files from the storage*/
     public static void processDumps() {
         String dumpsFolder = "dumps";
         File folder = new File(dumpsFolder);

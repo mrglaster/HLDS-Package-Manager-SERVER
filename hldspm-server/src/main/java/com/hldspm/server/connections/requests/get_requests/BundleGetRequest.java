@@ -2,9 +2,9 @@ package com.hldspm.server.connections.requests.get_requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hldspm.server.connections.requests.parental_requests.BasicGetRequest;
-import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
 import java.util.Objects;
 
+/**Class describing the bundle getting request*/
 public class BundleGetRequest extends BasicGetRequest {
     @JsonProperty("type")
     private String type;

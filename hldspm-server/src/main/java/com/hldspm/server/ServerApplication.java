@@ -1,31 +1,30 @@
 package com.hldspm.server;
-import com.hldspm.server.banner.CustomBanner;
+import ch.qos.logback.classic.Logger;
+import com.hldspm.server.io.banner.CustomBanner;
 import com.hldspm.server.cfg_reader.CfgReader;
 import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.database.dumper.DumpReader;
 import com.hldspm.server.database.initializer.DatabaseInitializer;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
-import com.hldspm.server.io.io;
-import org.apache.juli.logging.Log;
+import com.hldspm.server.io.custom_pring.io;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.io.PrintStream;
 
-
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class ServerApplication {
 
 	public static JdbcTemplate jdbcTemplate;
 	public static CfgReader configure;
-
 	private static volatile boolean isShuttingDown = false;
+
+	@Value("${local.server.port}")
+	private static int serverPort;
 
 	/**Initializing JdbcTemplate to work with the database*/
 	@Autowired
@@ -34,6 +33,7 @@ public class ServerApplication {
 	}
 
 
+	/**Create a backup on server shutdown*/
 	private static void processShutdownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			if (!isShuttingDown) {
@@ -49,20 +49,38 @@ public class ServerApplication {
 		}));
 	}
 
-	public static void main(String[] args) {
+	/**Disable logging (for jar run)*/
+	private static void disableLogging(){
+		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+		root.setLevel(ch.qos.logback.classic.Level.convertAnSLF4JLevel(Level.ERROR));
+	}
+
+	/**Read the data from the config file*/
+	private static void readConfig(){
 		configure = new CfgReader();
 		configure.processCfgRead();
-		StructureOrganizer.initFileSystem();
-		SpringApplication app = new SpringApplication(ServerApplication.class);
-		app.setBanner(CustomBanner.customBanner);
-		io.customPrint("Starting the server...");
-		app.run(args);
+	}
+
+	/**Initialize tables in the database*/
+	private static void processDbInit(){
 		if (Integer.parseInt(configure.getCreateTableStructureFlag()) == 1){
 			io.customPrint("Initializing database...");
 			DatabaseInitializer.processDatabaseInit();
 		}
+	}
+
+
+	public static void main(String[] args) {
+		readConfig();
+		disableLogging();
+		SpringApplication app = new SpringApplication(ServerApplication.class);
+		app.setBanner(CustomBanner.customBanner);
+		app.run(args);
+		StructureOrganizer.initFileSystem();
+		processDbInit();
 		DumpReader.processDumps();
 		io.customPrint("The server is running");
 		processShutdownHook();
+
 	}
 }

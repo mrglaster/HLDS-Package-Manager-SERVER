@@ -1,6 +1,6 @@
 package com.hldspm.server.database.dumper;
 
-import com.hldspm.server.io.io;
+import com.hldspm.server.io.custom_pring.io;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ArchiveProcessing {
-
+    /**Adds repository storage to the archive*/
     public static void archiveRepoFolder(String folderPath, String archiveName) {
         io.customPrint("Archiving the repo's files");
         try {
@@ -27,6 +27,7 @@ public class ArchiveProcessing {
         }
     }
 
+    /**Adds folders & files to the Tar.Gz archive*/
     private static void addFilesToTar(TarArchiveOutputStream tarOut, String sourceFolder, String parentFolder) throws IOException {
         File folder = new File(sourceFolder);
         File[] files = folder.listFiles();
@@ -49,14 +50,15 @@ public class ArchiveProcessing {
         }
     }
 
+    /**Generates the dump/backup file*/
     public static void generateDumpFile(String sqlPath, String repoArchivePath, String outputPath) {
         io.customPrint("Generating the dump file...");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(outputPath);
             GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(fileOutputStream);
             TarArchiveOutputStream tarOutputStream = new TarArchiveOutputStream(gzipOutputStream);
-            addToTar(sqlPath, tarOutputStream);
-            addToTar(repoArchivePath, tarOutputStream);
+            archiveSingleObject(sqlPath, tarOutputStream);
+            archiveSingleObject(repoArchivePath, tarOutputStream);
             tarOutputStream.close();
             gzipOutputStream.close();
             fileOutputStream.close();
@@ -65,7 +67,8 @@ public class ArchiveProcessing {
         }
     }
 
-    private static void addToTar(String filePath, TarArchiveOutputStream tarOutputStream) throws IOException {
+    /**Archives single object*/
+    private static void archiveSingleObject(String filePath, TarArchiveOutputStream tarOutputStream) throws IOException {
         File file = new File(filePath);
         TarArchiveEntry tarEntry = new TarArchiveEntry(file);
         tarEntry.setSize(file.length());

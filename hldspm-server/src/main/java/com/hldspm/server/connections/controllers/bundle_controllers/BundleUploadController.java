@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BundleUploadController {
 
+    /**Bundle upload routing*/
     @PostMapping(value={"upload/bundle", "/upload/bundle"}, produces = "application/json")
     public String uploadBundle(@RequestBody BundleUploadRequest request){
         return BundleUploader.processBundleUpload(request);

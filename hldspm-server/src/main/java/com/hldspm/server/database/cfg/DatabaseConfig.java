@@ -8,6 +8,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+/**Database configuration class*/
 @Configuration
 public class DatabaseConfig {
     @Autowired

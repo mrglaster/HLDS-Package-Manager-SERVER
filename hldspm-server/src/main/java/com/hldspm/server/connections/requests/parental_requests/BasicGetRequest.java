@@ -4,6 +4,7 @@ import com.hldspm.server.constants.MainConstants;
 
 import java.util.Objects;
 
+/**Base class for getting requests containing the main parameters*/
 public class BasicGetRequest {
     private String game;
     private String engine;

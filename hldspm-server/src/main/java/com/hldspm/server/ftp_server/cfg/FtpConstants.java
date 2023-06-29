@@ -5,6 +5,7 @@ import com.hldspm.server.ServerApplication;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**Class containing some FTP-server constants*/
 public class FtpConstants {
 
     public static final String FTP_LINK_INIT = ServerApplication.configure.getFtpUrlTemplate();

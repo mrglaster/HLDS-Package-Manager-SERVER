@@ -7,6 +7,7 @@ import com.hldspm.server.models.ManifestElementModel;
 import java.util.List;
 import java.util.Objects;
 
+/**Class describing the manifest getting request*/
 public class ManifestGetRequest{
 
     @JsonProperty("engine")

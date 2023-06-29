@@ -14,12 +14,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
 
+/**Provides functions for the maps upload*/
 public class MapsUploader {
 
+    /**Generates SQL query for map upload*/
     private static String generateMapUploadQuery(){
         return "INSERT INTO maps(engine, game, name, gamemode) VALUES (?, ?, ?, ?)";
     }
 
+    /**Adds the uploaded map into the database*/
     private static void addMapToDb(MapUploadRequest request){
         String query = generateMapUploadQuery();
         int engine = 2;
@@ -27,6 +30,7 @@ public class MapsUploader {
         ServerApplication.jdbcTemplate.update(query, engine, request.getGame(), request.getName(), request.getGameMode());
     }
 
+    /**Saves the uploaded map on the storage*/
     private static void saveUploadedMap(MapUploadRequest request){
         String mapsPath = FtpConstants.getFtpPath() + "/" + request.getEngine() + "/" + "maps"+ "/"+ request.getGame();
         try {
@@ -40,7 +44,7 @@ public class MapsUploader {
         }
     }
 
-
+    /**Processes the map upload*/
     public static String processMapUpload(MapUploadRequest request){
 
         String uploaderToken = request.getToken();

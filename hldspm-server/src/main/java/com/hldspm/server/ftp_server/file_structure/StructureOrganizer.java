@@ -1,12 +1,8 @@
 package com.hldspm.server.ftp_server.file_structure;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
-import com.hldspm.server.io.io;
+import com.hldspm.server.io.custom_pring.io;
 
 import java.io.File;
-
-
-
-// TODO Переписать модуль
 
 public class StructureOrganizer {
     private static final String[] mods = {"cs", "cscz", "dod", "hl", "op4", "universal"};
@@ -125,8 +121,7 @@ public class StructureOrganizer {
     }
 
     public static void initFileSystem(){
-        io.customPrint("Checking the FTP-server file structure");
-        io.customPrint("Analyzing the file structure");
+        io.customPrint("Checking the FTP-server file tree");
         StructureOrganizer.createFtpFilesystem("files");
     }
 

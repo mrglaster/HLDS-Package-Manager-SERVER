@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static com.hldspm.server.ftp_server.cfg.FtpConstants.getFtpPath;
 
+/**Class configuring the FTP-server*/
 @Configuration
 public class FtpServerConfig {
     private static final String REPO_DATA_ROOT = getFtpPath();

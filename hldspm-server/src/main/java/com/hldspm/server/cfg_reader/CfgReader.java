@@ -1,6 +1,6 @@
 package com.hldspm.server.cfg_reader;
 
-import com.hldspm.server.io.io;
+import com.hldspm.server.io.custom_pring.io;
 import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
@@ -26,6 +26,7 @@ public class CfgReader {
     private static String createTableStructure;
 
 
+    /**Reads database connection parameters from the ini file*/
     private void readDatabaseParameters(INIConfiguration iniConfiguration){
         dbName = iniConfiguration.getSection("database").getProperty("database_name").toString();
         dbUsername = iniConfiguration.getSection("database").getProperty("username").toString();
@@ -37,11 +38,13 @@ public class CfgReader {
         repoAdminPassword = iniConfiguration.getSection("database").getProperty("repo_admin_token").toString();
     }
 
+    /**Reads the FTP-server parameters from the ini file*/
     private void readFtpServerParameters(INIConfiguration iniConfiguration){
         ftpAddress = iniConfiguration.getSection("ftp").getProperty("address").toString();
         ftpPort = iniConfiguration.getSection("ftp").getProperty("port").toString();
     }
 
+    /**Reads the configuartion data from the ini file*/
     public void processCfgRead() {
         INIConfiguration iniConfiguration = new INIConfiguration();
         try (FileReader fileReader = new FileReader(cfgFilePath)) {
@@ -50,13 +53,12 @@ public class CfgReader {
             throw new RuntimeException(e);
         }
         try {
-            io.customPrint("Reading the configuration file");
             readDatabaseParameters(iniConfiguration);
             readFtpServerParameters(iniConfiguration);
-            io.customPrint("Data from the configuration file was successfully read");
         } catch (Exception e) {
             throw new RuntimeException("Bad cfg file!");
         }
+
     }
 
     public static String getDatabaseUrl(){
@@ -107,6 +109,7 @@ public class CfgReader {
         return repoAdminPassword;
     }
 
+    /**Generates the admin adding query based on data from the ini file*/
     public static String generateAdminInsertionQuery(){
         return "INSERT INTO uploaders(name, token) VALUES('" + getRepoAdmin() + "', '" + getRepoAdminPassword() + "');";
     }

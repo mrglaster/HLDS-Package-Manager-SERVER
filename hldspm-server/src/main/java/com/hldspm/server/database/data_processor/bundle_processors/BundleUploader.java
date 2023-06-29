@@ -18,6 +18,7 @@ import static com.hldspm.server.database.data_processor.utils.Utils.wrapWithQuot
 
 //TODO огпределить что использовать лучше, имена или id
 
+/**Class processing the bundle upload request*/
 public class BundleUploader {
     private static final Gson curGson = new GsonBuilder().setPrettyPrinting().create();
 

@@ -13,9 +13,12 @@ import java.util.List;
 
 // TODO Оптимизировать запросы
 // TODO Сделать загрузку последних версий плагинов
+
+/**Provides functions for bundle getting*/
 public class BundleGetter {
 
 
+    /**Turns the content type name into the number for the SQL query*/
     private static int getNumberByType(String type){
         switch(type){
             case "plugin" -> {
@@ -31,6 +34,7 @@ public class BundleGetter {
         return 1;
     }
 
+    /**Processes the bundle getting*/
     public static String processBundleGetting(BundleGetRequest request){
         JsonObject response = new JsonObject();
         Gson curGson = new GsonBuilder().setPrettyPrinting().create();

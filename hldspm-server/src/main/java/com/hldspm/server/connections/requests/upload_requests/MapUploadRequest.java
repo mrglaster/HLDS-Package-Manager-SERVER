@@ -3,6 +3,7 @@ package com.hldspm.server.connections.requests.upload_requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hldspm.server.connections.requests.parental_requests.BasicUploadRequest;
 
+/**Class describing the Map upload request*/
 public class MapUploadRequest extends BasicUploadRequest {
 
     @JsonProperty("gamemode")

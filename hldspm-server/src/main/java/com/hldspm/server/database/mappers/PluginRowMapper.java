@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**Class for plguin getting database response parsing*/
 public class PluginRowMapper implements RowMapper<PluginModel> {
     @Override
     public PluginModel mapRow(ResultSet rs, int rowNum) throws SQLException {

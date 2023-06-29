@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+/**Class containing methods for status-responses (200, 404, etc) */
 public class StatusResponses {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

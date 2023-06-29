@@ -2,6 +2,7 @@ package com.hldspm.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**Model for a manifest element*/
 public class ManifestElementModel {
 
     @JsonProperty("type")

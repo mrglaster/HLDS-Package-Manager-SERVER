@@ -27,6 +27,7 @@ public class GeneralValidator {
         return !this.base64String.isEmpty() && this.tarInputStream != null;
     }
 
+    /**Checks if string corresponds the Base64 string*/
     public boolean isBase64(String input) {
         String base64Pattern = "^[A-Za-z0-9+/]*={0,2}$";
         return input.length() != 0 &&  Pattern.matches(base64Pattern, input);

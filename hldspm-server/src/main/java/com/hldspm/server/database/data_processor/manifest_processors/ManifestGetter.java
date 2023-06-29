@@ -17,9 +17,11 @@ import java.util.Objects;
 
 //TODO ОПТИМИЗИРОВАТЬ ЗАПРОСЫ
 
+/**Class processing the manifest get request*/
 public class ManifestGetter {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    /**Generates SQL query to get a manifest element*/
     private static String getManifestElementQuery(String game, ManifestElementModel element) {
         StringBuilder queryBuilder = new StringBuilder();
 
@@ -34,11 +36,10 @@ public class ManifestGetter {
                 }
             }
         }
-
         return queryBuilder.toString();
-
     }
 
+    /**Generates FTP-server link by some data*/
     private static String getFtpServerLink(String game, String engine, ManifestElementModel element) {
         String query = getManifestElementQuery(game, element);
         List<String> count = ServerApplication.jdbcTemplate.queryForList(query, String.class);
@@ -51,6 +52,7 @@ public class ManifestGetter {
         return FtpConstants.FTP_LINK_INIT + engine + '/' + element.getType() + "s/" + game + '/' + currentName + ".tar.gz";
     }
 
+    /**The manifest getting function*/
     public static String processManifestGetting(ManifestGetRequest request) {
         if (request.getManifestList().isEmpty())
             return StatusResponses.generateBadManifestData();
@@ -77,7 +79,6 @@ public class ManifestGetter {
                 processedElements.add(element.getName());
             }
         }
-
         int status = 200;
         if (errors.size() > 0)
             status = 211;

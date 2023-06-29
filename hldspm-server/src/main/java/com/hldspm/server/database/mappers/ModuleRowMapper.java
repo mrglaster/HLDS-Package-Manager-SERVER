@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+//TODO Модифицировать
 public class ModuleRowMapper implements RowMapper<ModuleModel> {
     @Override
     public ModuleModel mapRow(ResultSet rs, int rowNum) throws SQLException {

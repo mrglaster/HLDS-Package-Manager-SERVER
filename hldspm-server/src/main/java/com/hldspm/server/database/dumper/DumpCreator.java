@@ -1,6 +1,6 @@
 package com.hldspm.server.database.dumper;
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.io.io;
+import com.hldspm.server.io.custom_pring.io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,6 +15,8 @@ import java.util.UUID;
 
 public class DumpCreator {
     public static boolean hasChanges = false;
+
+    /**Gets list of all tables from the database*/
     private static void dumpAllTables(String dumpFilePath) {
         io.customPrint("Saving the database information");
         List<String> tableNames = getAllTableNames();
@@ -36,11 +38,13 @@ public class DumpCreator {
         }
     }
 
+    /**Gets all the table names from the database*/
     private static List<String> getAllTableNames() {
         String query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'";
         return ServerApplication.jdbcTemplate.queryForList(query, String.class);
     }
 
+    /**Gets column names of the table*/
     private static List<String> getColumnNames(String tableName) {
         String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
         return ServerApplication.jdbcTemplate.queryForList(query, new Object[]{tableName}, String.class);
@@ -76,6 +80,7 @@ public class DumpCreator {
         }
     }
 
+    /**Creates the dump/backup file*/
     public static void makeDump(){
         String dumpFolderName = "dumps";
         String sqlName = UUID.randomUUID() + ".sql";

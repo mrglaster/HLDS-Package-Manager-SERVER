@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 
+/**Class providing the plugin archive validation class*/
 public class PluginValidator extends GeneralValidator{
 
     public PluginValidator(String base64String) {
@@ -22,6 +23,7 @@ public class PluginValidator extends GeneralValidator{
     }
 
     // TODO: Улучшить
+    /**Checks if the plugin is valid*/
     public boolean isValidPlugin() throws IOException {
         if (super.tarInputStream == null || !isBase64(base64String)) return false;
         if (!super.isTarGz()) return false;

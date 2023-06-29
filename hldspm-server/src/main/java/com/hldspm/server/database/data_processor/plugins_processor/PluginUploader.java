@@ -20,11 +20,14 @@ import static com.hldspm.server.connections.requests.parental_requests.BasicGetR
 
 //TODO написать функции для удаления плагинов с учетом бандлов
 
+/**Provides functions for plugins upload*/
 public class PluginUploader{
+    /**Generates SQL query for plugin upload*/
     private static String generatePluginInsertQuery(){
         return "INSERT INTO plugins(engine, game, name, time) VALUES (?, ?, ?, ?)";
     }
 
+    /**Adds plugin to the database*/
     private static void addPluginToDb(PluginUploadRequest request){
         String query = generatePluginInsertQuery();
         int engine = 2;
@@ -33,6 +36,7 @@ public class PluginUploader{
     }
 
 
+    /**Saves uploaded plugin on the storage*/
     private static void saveUploadedPlugin(PluginUploadRequest request){
         String pluginPath = FtpConstants.getFtpPath() + "/" + request.getEngine() + "/" + "plugins"+ "/"+ request.getGame();
         try {
@@ -46,7 +50,7 @@ public class PluginUploader{
         }
     }
 
-
+    /**Processes the plugin upload*/
     public static String processPluginUpload(PluginUploadRequest request){
         String uploaderToken = request.getToken();
         String game = request.getGame();

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.hldspm.server.ServerApplication;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
 
+/**Provides functions for maps getting*/
 public class MapsGetter {
 
 

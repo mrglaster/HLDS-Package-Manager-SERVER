@@ -1,5 +1,6 @@
 package com.hldspm.server.models;
 
+/**Class for id & name fields storage*/
 public class SimpleRecordModel {
     private long id;
     private String name;
