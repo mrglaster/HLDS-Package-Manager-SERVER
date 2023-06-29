@@ -1,16 +1,22 @@
 package com.hldspm.server;
+import com.hldspm.server.banner.CustomBanner;
 import com.hldspm.server.cfg_reader.CfgReader;
 import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.database.dumper.DumpReader;
 import com.hldspm.server.database.initializer.DatabaseInitializer;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
 import com.hldspm.server.io.io;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.io.PrintStream;
 
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class})
@@ -47,10 +53,10 @@ public class ServerApplication {
 		configure = new CfgReader();
 		configure.processCfgRead();
 		StructureOrganizer.initFileSystem();
+		SpringApplication app = new SpringApplication(ServerApplication.class);
+		app.setBanner(CustomBanner.customBanner);
 		io.customPrint("Starting the server...");
-		SpringApplication.run(ServerApplication.class, args);
-
-
+		app.run(args);
 		if (Integer.parseInt(configure.getCreateTableStructureFlag()) == 1){
 			io.customPrint("Initializing database...");
 			DatabaseInitializer.processDatabaseInit();
@@ -58,6 +64,5 @@ public class ServerApplication {
 		DumpReader.processDumps();
 		io.customPrint("The server is running");
 		processShutdownHook();
-
 	}
 }
