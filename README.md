@@ -331,7 +331,6 @@ sudo apt install openjdk-19-jre-headless
 
 ```
 sudo -u postgres createuser -d -r -e username --pwprompt
-
 ```
 
 4) Создайте новую базу данных, владальцем которой является созданный вами пользователь
