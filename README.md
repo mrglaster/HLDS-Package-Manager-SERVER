@@ -368,6 +368,9 @@ sudo java -jar hldspm-server.jar
 
 8) Profit!
 
+![изображение](https://github.com/mrglaster/HLDS-Package-Manager-SERVER/assets/50916604/b8ba1ece-5aac-456a-8f71-0576939b2b41)
+
+
 
 
 
