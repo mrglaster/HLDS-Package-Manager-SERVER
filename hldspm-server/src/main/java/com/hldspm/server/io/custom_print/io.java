@@ -1,4 +1,4 @@
-package com.hldspm.server.io.custom_pring;
+package com.hldspm.server.io.custom_print;
 
 /**Class providing methods for custom output/logging*/
 public class io {

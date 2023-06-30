@@ -1,6 +1,6 @@
 package com.hldspm.server.database.dumper;
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.hldspm.server.database.dumper;
 
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;

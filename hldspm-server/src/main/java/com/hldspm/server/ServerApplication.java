@@ -1,16 +1,15 @@
 package com.hldspm.server;
 import ch.qos.logback.classic.Logger;
-import com.hldspm.server.io.banner.CustomBanner;
+import com.hldspm.server.io.custom_print.banner.CustomBanner;
 import com.hldspm.server.cfg_reader.CfgReader;
 import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.database.dumper.DumpReader;
 import com.hldspm.server.database.initializer.DatabaseInitializer;
 import com.hldspm.server.ftp_server.file_structure.StructureOrganizer;
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,8 +22,6 @@ public class ServerApplication {
 	public static CfgReader configure;
 	private static volatile boolean isShuttingDown = false;
 
-	@Value("${local.server.port}")
-	private static int serverPort;
 
 	/**Initializing JdbcTemplate to work with the database*/
 	@Autowired
@@ -81,6 +78,5 @@ public class ServerApplication {
 		DumpReader.processDumps();
 		io.customPrint("The server is running");
 		processShutdownHook();
-
 	}
 }

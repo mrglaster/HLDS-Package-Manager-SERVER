@@ -1,6 +1,6 @@
 package com.hldspm.server.ftp_server.file_structure;
 import com.hldspm.server.ftp_server.cfg.FtpConstants;
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 
 import java.io.File;
 

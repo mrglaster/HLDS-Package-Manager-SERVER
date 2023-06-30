@@ -1,7 +1,7 @@
 package com.hldspm.server.database.dumper;
 
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
@@ -116,7 +116,7 @@ public class DumpReader {
         String dumpsFolder = "dumps";
         File folder = new File(dumpsFolder);
         File[] files = folder.listFiles();
-        if (files == null || files.length == 0) {
+        if (files == null || files.length == 0 || (files.length == 1 && !files[0].getName().endsWith("tar.gz"))) {
             io.customPrint("Dumps weren't found!");
             return;
         }
@@ -125,7 +125,9 @@ public class DumpReader {
         for (File file : files) {
             executorService.execute(() -> {
                 //TODO найти  способ определения дубликатов
-                processDumpFile(file);
+                if (file.getName().endsWith("tar.gz")) {
+                    processDumpFile(file);
+                }
             });
         }
 

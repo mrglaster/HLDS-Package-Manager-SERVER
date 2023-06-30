@@ -1,7 +1,7 @@
 package com.hldspm.server.database.initializer;
 
 import com.hldspm.server.ServerApplication;
-import com.hldspm.server.io.custom_pring.io;
+import com.hldspm.server.io.custom_print.io;
 import org.springframework.dao.DataAccessException;
 
 /**Class providing functions to create the table structure in the database*/
