@@ -30,8 +30,8 @@ public class DatabaseInitializer {
             	id BIGSERIAL PRIMARY KEY,
             	engine INT NOT NULL,
             	game VARCHAR(10),
-            	uploader VARCHAR(255),
             	name VARCHAR(255) NOT NULL UNIQUE,
+            	time TIMESTAMP(6) WITHOUT TIME ZONE,
             	FOREIGN KEY (engine) REFERENCES engines(id)
             );
                         
