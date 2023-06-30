@@ -310,3 +310,67 @@
 }
 ```
 
+## Как запустить 
+
+### ОС Linux
+
+1) Установите Java версии 17+
+Сделать это можно при помощи команды
+```
+sudo apt install openjdk-19-jre-headless
+```
+
+2) Установите PostgreSQL
+
+```
+ sudo apt install postgresql postgresql-contrib
+ sudo systemctl start postgresql.service	
+```
+
+3) Создайте нового пользователя PostgreSQL с паролем
+
+```
+sudo -u postgres createuser -d -r -e username --pwprompt
+
+```
+
+4) Создайте новую базу данных, владальцем которой является созданный вами пользователь
+
+```
+ sudo -u postgres psql
+ CREATE DATABASE dbname OWNER username;
+```
+
+5) Скачайте последний релиз сервера, распакуйте архив
+6) Отредактируйте файл cfg/configuration.ini
+
+```
+[database]
+server_address="your server ip"
+server_port="5432"
+database_name="Namem of your database"
+username="User's name"
+password="User's password"
+repo_admin="Name of repo's admin (user who can upoload resources to repo)"
+repo_admin_token="Token of uploader "
+create_table_structure="1"
+
+[ftp]
+address="your server ip"
+port="21"
+```
+
+7) Запустите сервер при помощи команды
+
+```
+sudo java -jar hldspm-server.jar 
+```
+
+8) Profit!
+
+
+
+
+
+
+
