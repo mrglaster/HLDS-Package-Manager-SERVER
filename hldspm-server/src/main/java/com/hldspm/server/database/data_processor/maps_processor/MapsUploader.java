@@ -62,6 +62,12 @@ public class MapsUploader {
             return StatusResponses.generateUnknownEngineError(request.getEngine());
         }
 
+        String query = "SELECT COUNT(*) FROM maps where name='" + request.getName() + "';";
+        if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
+            return StatusResponses.generateBadResourceNameError();
+        }
+
+
         MapValidator validator = new MapValidator(uploadedData);
         if (!validator.isValidMap()) {
            return StatusResponses.generateInvalidResourceDataErr();

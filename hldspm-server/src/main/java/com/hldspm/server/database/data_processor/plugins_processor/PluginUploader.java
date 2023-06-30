@@ -71,6 +71,12 @@ public class PluginUploader{
             return StatusResponses.generateUnknownEngineError(request.getEngine());
         }
 
+        String currentName = request.getName() + '%' + request.getVersion();
+        String query = "SELECT COUNT(*) FROM plugins WHERE name='" + currentName +"';";
+        if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
+            return StatusResponses.generateBadResourceNameError();
+        }
+
         PluginValidator validator = new PluginValidator(uploadedData);
         try {
             if (!validator.isValidPlugin()) {
@@ -79,6 +85,7 @@ public class PluginUploader{
         } catch (IOException e) {
             return StatusResponses.generateBadRequestErr();
         }
+
         saveUploadedPlugin(request);
         DumpCreator.hasChanges = true;
         return StatusResponses.generateSuccessfulUpload();

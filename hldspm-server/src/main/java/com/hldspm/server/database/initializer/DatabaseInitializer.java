@@ -65,10 +65,14 @@ public class DatabaseInitializer {
                         
             """;
 
+    /**SQL query for engines upload*/
     private static final String initEngines = "INSERT INTO engines (name) VALUES ('gold'), ('source');";
+
+
+    /**SQL query for content types upload*/
     private static final String initContentTypes = "INSERT INTO content_types(name) VALUES ('plugin'), ('map'), ('module');";
 
-
+    /**Function processing the database initialization*/
     public static void processDatabaseInit(){
         try {
             io.customPrint("Creating table structure");

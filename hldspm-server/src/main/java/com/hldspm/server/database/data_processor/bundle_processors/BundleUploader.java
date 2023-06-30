@@ -39,6 +39,11 @@ public class BundleUploader {
 
 
     private static String processMapBundle(BundleUploadRequest request){
+        String bundleCheckQuery = "SELECT COUNT(*) FROM bundles WHERE name='" + request.getName() + "' AND content_type=" + request.contentTypeToId() + ';';
+        if (ServerApplication.jdbcTemplate.queryForObject(bundleCheckQuery, Integer.class) != 0){
+            return StatusResponses.generateBadResourceNameError();
+        }
+
        String query = generateMapsGettingQuery(request);
        List<Integer> ids = ServerApplication.jdbcTemplate.queryForList(query, Integer.class);
        JsonObject response = new JsonObject();
@@ -104,7 +109,6 @@ public class BundleUploader {
         if (Objects.equals(request.getType(), "plugin")){
             return processPluginBundle(request);
         }
-
         return processMapBundle(request);
     }
 }
