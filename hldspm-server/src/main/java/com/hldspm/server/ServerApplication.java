@@ -1,6 +1,6 @@
 package com.hldspm.server;
 import ch.qos.logback.classic.Logger;
-import com.hldspm.server.io.custom_print.banner.CustomBanner;
+import com.hldspm.server.io.banner.CustomBanner;
 import com.hldspm.server.cfg_reader.CfgReader;
 import com.hldspm.server.database.dumper.DumpCreator;
 import com.hldspm.server.database.dumper.DumpReader;
@@ -12,6 +12,9 @@ import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 
@@ -66,6 +69,11 @@ public class ServerApplication {
 		}
 	}
 
+	/**Configures the port change*/
+	@Bean
+	public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
+		return factory -> factory.setPort(configure.getPort());
+	}
 
 	public static void main(String[] args) {
 		readConfig();
@@ -76,7 +84,7 @@ public class ServerApplication {
 		StructureOrganizer.initFileSystem();
 		processDbInit();
 		DumpReader.processDumps();
-		io.customPrint("The server is running");
+		io.customPrint("The server is running on port " + configure.getPort());
 		processShutdownHook();
 	}
 }

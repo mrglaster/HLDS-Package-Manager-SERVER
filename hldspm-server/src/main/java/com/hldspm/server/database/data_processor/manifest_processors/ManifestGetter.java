@@ -14,6 +14,7 @@ import com.hldspm.server.models.ManifestElementModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 //TODO ОПТИМИЗИРОВАТЬ ЗАПРОСЫ
 
@@ -53,42 +54,44 @@ public class ManifestGetter {
     }
 
     /**The manifest getting function*/
-    public static String processManifestGetting(ManifestGetRequest request) {
-        if (request.getManifestList().isEmpty())
-            return StatusResponses.generateBadManifestData();
-        if (!request.isValidRequest())
-            return StatusResponses.generateBadRequestErr();
+    public static  CompletableFuture<String>  processManifestGetting(ManifestGetRequest request) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (request.getManifestList().isEmpty())
+                return StatusResponses.generateBadManifestData();
+            if (!request.isValidRequest())
+                return StatusResponses.generateBadRequestErr();
 
-        String game = request.getGame();
-        String engine = request.getEngine();
-        JsonArray plugins = new JsonArray();
-        JsonArray maps = new JsonArray();
-        JsonArray errors = new JsonArray();
-        List<String> processedElements = new ArrayList<>();
-        for (ManifestElementModel element : request.getManifestList()) {
-            if (!processedElements.contains(element.getName())) {
-                String currentLink = getFtpServerLink(game, engine, element);
-                if (currentLink.equals("None")) {
-                    errors.add(element.getName());
-                } else {
-                    if (Objects.equals(element.getType(), "map"))
-                        maps.add(currentLink);
-                    else
-                        plugins.add(currentLink);
+            String game = request.getGame();
+            String engine = request.getEngine();
+            JsonArray plugins = new JsonArray();
+            JsonArray maps = new JsonArray();
+            JsonArray errors = new JsonArray();
+            List<String> processedElements = new ArrayList<>();
+            for (ManifestElementModel element : request.getManifestList()) {
+                if (!processedElements.contains(element.getName())) {
+                    String currentLink = getFtpServerLink(game, engine, element);
+                    if (currentLink.equals("None")) {
+                        errors.add(element.getName());
+                    } else {
+                        if (Objects.equals(element.getType(), "map"))
+                            maps.add(currentLink);
+                        else
+                            plugins.add(currentLink);
+                    }
+                    processedElements.add(element.getName());
                 }
-                processedElements.add(element.getName());
             }
-        }
-        int status = 200;
-        if (errors.size() > 0)
-            status = 211;
+            int status = 200;
+            if (errors.size() > 0)
+                status = 211;
 
-        JsonObject response = new JsonObject();
-        response.addProperty("status", status);
-        response.add("plugins", plugins);
-        response.add("maps", maps);
-        response.add("errors", errors);
+            JsonObject response = new JsonObject();
+            response.addProperty("status", status);
+            response.add("plugins", plugins);
+            response.add("maps", maps);
+            response.add("errors", errors);
 
-        return gson.toJson(response);
+            return gson.toJson(response);
+        });
     }
 }

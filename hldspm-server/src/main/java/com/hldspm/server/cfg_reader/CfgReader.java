@@ -9,6 +9,11 @@ import java.io.IOException;
 public class CfgReader {
 
     private static final String cfgFilePath = "cfg/configuration.ini";
+
+    private static int port;
+    private static String protocol;
+
+
     private static String serverUrl;
     private static String serverPort;
 
@@ -17,7 +22,7 @@ public class CfgReader {
     private static String dbPassword;
 
     private static String repoAdmin;
-    private static String repoAdminPassword;
+    private static String repoAdminToken;
 
     private static String ftpAddress;
     private static String ftpPort;
@@ -34,7 +39,20 @@ public class CfgReader {
         serverPort = iniConfiguration.getSection("database").getProperty("server_port").toString();
         createTableStructure = iniConfiguration.getSection("database").getProperty("create_table_structure").toString();
         repoAdmin = iniConfiguration.getSection("database").getProperty("repo_admin").toString();
-        repoAdminPassword = iniConfiguration.getSection("database").getProperty("repo_admin_token").toString();
+        repoAdminToken = iniConfiguration.getSection("database").getProperty("repo_admin_token").toString();
+        try{
+            port = Integer.parseInt(iniConfiguration.getSection("server").getProperty("port").toString());
+        } catch (Exception e){
+            port = 8080;
+        }
+            protocol = iniConfiguration.getSection("server").getProperty("protocol").toString();
+        if (!protocol.equalsIgnoreCase("http") && !protocol.equalsIgnoreCase("https")){
+            try {
+                throw new Exception("[LOADER] Unknown protocol: " + protocol);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**Reads the FTP-server parameters from the ini file*/
@@ -104,13 +122,28 @@ public class CfgReader {
         return repoAdmin;
     }
 
-    public static String getRepoAdminPassword() {
-        return repoAdminPassword;
+    public static String getRepoAdminToken() {
+        return repoAdminToken;
     }
 
     /**Generates the admin adding query based on data from the ini file*/
-    public static String generateAdminInsertionQuery(){
-        return "INSERT INTO uploaders(name, token) VALUES('" + getRepoAdmin() + "', '" + getRepoAdminPassword() + "');";
+    public  String generateAdminInsertionQuery(){
+        return "INSERT INTO uploaders(name, token) VALUES('" + getRepoAdmin() + "', '" + getRepoAdminToken() + "');";
     }
 
+    public static int getPort() {
+        return port;
+    }
+
+    public static void setPort(int port) {
+        CfgReader.port = port;
+    }
+
+    public static String getProtocol() {
+        return protocol;
+    }
+
+    public static void setProtocol(String protocol) {
+        CfgReader.protocol = protocol;
+    }
 }

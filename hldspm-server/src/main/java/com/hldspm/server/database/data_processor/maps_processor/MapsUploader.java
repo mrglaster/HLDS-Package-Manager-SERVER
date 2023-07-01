@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**Provides functions for the maps upload*/
 public class MapsUploader {
@@ -45,35 +46,36 @@ public class MapsUploader {
     }
 
     /**Processes the map upload*/
-    public static String processMapUpload(MapUploadRequest request){
+    public static CompletableFuture<String> processMapUpload(MapUploadRequest request){
+        return CompletableFuture.supplyAsync(() -> {
+            String uploaderToken = request.getToken();
+            String game = request.getGame();
+            String name = request.getName();
+            String uploadedData = request.getData();
 
-        String uploaderToken = request.getToken();
-        String game = request.getGame();
-        String name = request.getName();
-        String uploadedData = request.getData();
+            if (!UploaderVerification.isValidUploader(uploaderToken)) {
+                return StatusResponses.generateBadTokenError();
+            } else if (!BasicGetRequest.isValidGame(game)) {
+                return StatusResponses.generateBadGameError(game);
+            } else if (!UploadDataChecks.isNameAvailable("map", game, name)) {
+                return StatusResponses.generateBadResourceNameError();
+            } else if (!Objects.equals(request.getEngine(), "gold") && !Objects.equals(request.getEngine(), "source")){
+                return StatusResponses.generateUnknownEngineError(request.getEngine());
+            }
 
-        if (!UploaderVerification.isValidUploader(uploaderToken)) {
-            return StatusResponses.generateBadTokenError();
-        } else if (!BasicGetRequest.isValidGame(game)) {
-            return StatusResponses.generateBadGameError(game);
-        } else if (!UploadDataChecks.isNameAvailable("map", game, name)) {
-            return StatusResponses.generateBadResourceNameError();
-        } else if (!Objects.equals(request.getEngine(), "gold") && !Objects.equals(request.getEngine(), "source")){
-            return StatusResponses.generateUnknownEngineError(request.getEngine());
-        }
-
-        String query = "SELECT COUNT(*) FROM maps where name='" + request.getName() + "';";
-        if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
-            return StatusResponses.generateBadResourceNameError();
-        }
+            String query = "SELECT COUNT(*) FROM maps where name='" + request.getName() + "';";
+            if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
+                return StatusResponses.generateBadResourceNameError();
+            }
 
 
-        MapValidator validator = new MapValidator(uploadedData);
-        if (!validator.isValidMap()) {
-           return StatusResponses.generateInvalidResourceDataErr();
-        }
-        saveUploadedMap(request);
-        DumpCreator.hasChanges = true;
-        return StatusResponses.generateSuccessfulUpload();
+            MapValidator validator = new MapValidator(uploadedData);
+            if (!validator.isValidMap()) {
+                return StatusResponses.generateInvalidResourceDataErr();
+            }
+            saveUploadedMap(request);
+            DumpCreator.hasChanges = true;
+            return StatusResponses.generateSuccessfulUpload();
+        });
     }
 }

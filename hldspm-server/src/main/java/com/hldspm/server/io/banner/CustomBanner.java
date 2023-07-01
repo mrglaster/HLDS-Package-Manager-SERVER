@@ -1,4 +1,4 @@
-package com.hldspm.server.io.custom_print.banner;
+package com.hldspm.server.io.banner;
 import org.springframework.boot.Banner;
 
 

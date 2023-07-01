@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import static com.hldspm.server.database.data_processor.utils.Utils.wrapWithQuotes;
 
@@ -33,7 +34,7 @@ public class BundleUploader {
 
 
     private static boolean isBundleNameAvailable(BundleUploadRequest request){
-        String query = "SELECT COUNT(*) FROM bundles WHERE name='" + request.getName() + "' AND content_type=" + request.contentTypeToId() + ';';;
+        String query = "SELECT COUNT(*) FROM bundles WHERE name='" + request.getName() + "' AND content_type=" + request.contentTypeToId() + ';';
         return ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) == 0;
     }
 
@@ -91,19 +92,22 @@ public class BundleUploader {
         return StatusResponses.generateSuccessfulUpload();
     }
 
-    public static String processBundleUpload(BundleUploadRequest request){
-        if (!UploaderVerification.isValidUploader(request.getToken())) {
-            return StatusResponses.generateBadTokenError();
-        }
-        if (!request.isValidRequest()){
-            return StatusResponses.generateBadRequestErr();
-        }
-        if (!isBundleNameAvailable(request)){
-            return StatusResponses.generateBadResourceNameError();
-        }
-        if (Objects.equals(request.getType(), "plugin")){
-            return processPluginBundle(request);
-        }
-        return processMapBundle(request);
+    public static CompletableFuture<String> processBundleUpload(BundleUploadRequest request){
+        return CompletableFuture.supplyAsync(() -> {
+            if (!UploaderVerification.isValidUploader(request.getToken())) {
+                return StatusResponses.generateBadTokenError();
+            }
+            if (!request.isValidRequest()){
+                return StatusResponses.generateBadRequestErr();
+            }
+            if (!isBundleNameAvailable(request)){
+                return StatusResponses.generateBadResourceNameError();
+            }
+            if (Objects.equals(request.getType(), "plugin")){
+                return processPluginBundle(request);
+            }
+            return processMapBundle(request);
+        });
+
     }
 }

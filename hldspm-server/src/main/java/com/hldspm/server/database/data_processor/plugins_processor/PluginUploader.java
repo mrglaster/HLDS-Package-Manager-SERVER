@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import static com.hldspm.server.connections.requests.parental_requests.BasicGetRequest.isValidGame;
 
@@ -51,44 +52,46 @@ public class PluginUploader{
     }
 
     /**Processes the plugin upload*/
-    public static String processPluginUpload(PluginUploadRequest request){
-        String uploaderToken = request.getToken();
-        String game = request.getGame();
-        String name = request.getName();
-        String uploadedData = request.getData();
+    public static CompletableFuture<String> processPluginUpload(PluginUploadRequest request){
+        return CompletableFuture.supplyAsync(() -> {
+            String uploaderToken = request.getToken();
+            String game = request.getGame();
+            String name = request.getName();
+            String uploadedData = request.getData();
 
-        if(!request.isValidRequest()){
-            return StatusResponses.generateBadRequestErr();
-        }
-
-        if (!UploaderVerification.isValidUploader(uploaderToken)) {
-            return StatusResponses.generateBadTokenError();
-        } else if (!isValidGame(game)) {
-            return StatusResponses.generateBadGameError(game);
-        } else if (!UploadDataChecks.isNameAvailable("plugin", game, name)) {
-           return StatusResponses.generateBadResourceNameError();
-        } else if (!Objects.equals(request.getEngine(), "gold") && !Objects.equals(request.getEngine(), "source")){
-            return StatusResponses.generateUnknownEngineError(request.getEngine());
-        }
-
-        String currentName = request.getName() + '%' + request.getVersion();
-        String query = "SELECT COUNT(*) FROM plugins WHERE name='" + currentName +"';";
-        if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
-            return StatusResponses.generateBadResourceNameError();
-        }
-
-        PluginValidator validator = new PluginValidator(uploadedData);
-        try {
-            if (!validator.isValidPlugin()) {
-                return StatusResponses.generateInvalidResourceDataErr();
+            if(!request.isValidRequest()){
+                return StatusResponses.generateBadRequestErr();
             }
-        } catch (IOException e) {
-            return StatusResponses.generateBadRequestErr();
-        }
 
-        saveUploadedPlugin(request);
-        DumpCreator.hasChanges = true;
-        return StatusResponses.generateSuccessfulUpload();
+            if (!UploaderVerification.isValidUploader(uploaderToken)) {
+                return StatusResponses.generateBadTokenError();
+            } else if (!isValidGame(game)) {
+                return StatusResponses.generateBadGameError(game);
+            } else if (!UploadDataChecks.isNameAvailable("plugin", game, name)) {
+                return StatusResponses.generateBadResourceNameError();
+            } else if (!Objects.equals(request.getEngine(), "gold") && !Objects.equals(request.getEngine(), "source")){
+                return StatusResponses.generateUnknownEngineError(request.getEngine());
+            }
+
+            String currentName = request.getName() + '%' + request.getVersion();
+            String query = "SELECT COUNT(*) FROM plugins WHERE name='" + currentName +"';";
+            if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
+                return StatusResponses.generateBadResourceNameError();
+            }
+
+            PluginValidator validator = new PluginValidator(uploadedData);
+            try {
+                if (!validator.isValidPlugin()) {
+                    return StatusResponses.generateInvalidResourceDataErr();
+                }
+            } catch (IOException e) {
+                return StatusResponses.generateBadRequestErr();
+            }
+
+            saveUploadedPlugin(request);
+            DumpCreator.hasChanges = true;
+            return StatusResponses.generateSuccessfulUpload();
+        });
     }
 
 
