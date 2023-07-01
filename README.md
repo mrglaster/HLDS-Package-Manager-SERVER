@@ -348,9 +348,9 @@ sudo -u postgres createuser -d -r -e username --pwprompt
 server_address="localhost"
 server_port="5432"
 database_name="Name of your database"
-username="User's name"
-password="User's password"
-repo_admin="Name of repo's admin (user who can upoload resources to repo)"
+username="Database User's name."
+password="Database User's password"
+repo_admin="Name of repo's admin. He's a kind of supreuser who can upload/delete content + add more uploaders"
 repo_admin_token="Token of uploader "
 create_table_structure="1"
 
