@@ -11,7 +11,6 @@ public class CfgReader {
     private static final String cfgFilePath = "cfg/configuration.ini";
 
     private static int port;
-    private static String protocol;
 
 
     private static String serverUrl;
@@ -44,14 +43,6 @@ public class CfgReader {
             port = Integer.parseInt(iniConfiguration.getSection("server").getProperty("port").toString());
         } catch (Exception e){
             port = 8080;
-        }
-            protocol = iniConfiguration.getSection("server").getProperty("protocol").toString();
-        if (!protocol.equalsIgnoreCase("http") && !protocol.equalsIgnoreCase("https")){
-            try {
-                throw new Exception("[LOADER] Unknown protocol: " + protocol);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -137,13 +128,5 @@ public class CfgReader {
 
     public static void setPort(int port) {
         CfgReader.port = port;
-    }
-
-    public static String getProtocol() {
-        return protocol;
-    }
-
-    public static void setProtocol(String protocol) {
-        CfgReader.protocol = protocol;
     }
 }
