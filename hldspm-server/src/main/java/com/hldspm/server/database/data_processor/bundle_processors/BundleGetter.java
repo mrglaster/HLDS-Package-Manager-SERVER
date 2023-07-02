@@ -10,6 +10,7 @@ import com.hldspm.server.ftp_server.cfg.FtpConstants;
 import com.hldspm.server.models.BundleModel;
 import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 // TODO Оптимизировать запросы
@@ -21,17 +22,9 @@ public class BundleGetter {
 
     /**Turns the content type name into the number for the SQL query*/
     private static int getNumberByType(String type){
-        switch(type){
-            case "plugin" -> {
-                return 1;
-            }
-            case "map" -> {
-                return 2;
-            }
-            case "module" -> {
-                return 3;
-            }
-        }
+        if (Objects.equals(type, "plugin")) return 1;
+        if (Objects.equals(type, "map")) return 2;
+        if (Objects.equals(type, "module")) return 3;
         return 1;
     }
 
@@ -56,7 +49,6 @@ public class BundleGetter {
             String resources = bundle.get(0).getPluginIds().replace('{', '(').replace('}', ')').replace(",", ", ");
             String searching = request.getType() + 's';
             String newQuery = "SELECT name FROM " + searching + " WHERE id IN " + resources;
-
             List<String> names = ServerApplication.jdbcTemplate.queryForList(newQuery, String.class);
             JsonArray elements = new JsonArray();
             for (String model : names){

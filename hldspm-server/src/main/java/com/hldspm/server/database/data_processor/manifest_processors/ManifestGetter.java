@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**Class processing the manifest get request*/
 public class ManifestGetter {
+    //TODO Добавить поддержку бандлов
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**Generates SQL query to get a manifest element*/

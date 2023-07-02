@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+//TODO Ввести разбиение контента формата Base64 на чанки
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.hldspm.server")

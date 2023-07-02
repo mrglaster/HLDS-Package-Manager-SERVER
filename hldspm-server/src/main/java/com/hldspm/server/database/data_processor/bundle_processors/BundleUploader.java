@@ -24,7 +24,7 @@ public class BundleUploader {
     private static final Gson curGson = new GsonBuilder().setPrettyPrinting().create();
 
     private static  String generateMapsGettingQuery(BundleUploadRequest request){
-        return "SELECT COUNT(*) FROM maps WHERE name IN " + request.getMapsAsDataList();
+        return "SELECT id FROM maps WHERE name IN " + request.getMapsAsDataList();
     }
 
     private static String generateLatestPluginGetQuery(String game, String name){
@@ -77,7 +77,7 @@ public class BundleUploader {
                             new BeanPropertyRowMapper<>(SimpleRecordModel.class));
 
                 } catch (Exception e){
-                    return StatusResponses.generateBadRequestErr();
+                    return StatusResponses.generateError(400, "Element " + name + " was not found in the database!");
                 }
                 if (elem != null) {
                     pluginsIds.append(elem.getId()).append(',');
@@ -103,6 +103,7 @@ public class BundleUploader {
             if (!isBundleNameAvailable(request)){
                 return StatusResponses.generateBadResourceNameError();
             }
+
             if (Objects.equals(request.getType(), "plugin")){
                 return processPluginBundle(request);
             }

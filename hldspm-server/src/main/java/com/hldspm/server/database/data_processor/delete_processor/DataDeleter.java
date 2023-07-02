@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.hldspm.server.database.data_processor.users_processor.UserChecks.isSudoUser;
 
 public class DataDeleter {
-    private static final List<String> supportedTypes = List.of(new String[]{"wtf", "plugin", "map", "module"});
+    private static final List<String> supportedTypes = List.of(new String[]{"wtf", "plugin", "map", "bundle"});
 
     private static String generateFileName(DeleteResourceRequest request) {
         StringBuilder fileName = new StringBuilder();
@@ -77,11 +77,15 @@ public class DataDeleter {
             return StatusResponses.generateError(404, "Unknown resource family: " + request.getName());
         }
         int type = getTypeNumeric(request.getType());
-        for (SimpleRecordModel elem : result) {
-            updateBundleArrays(elem.getId(), type);
-            processDeletion(request, elem);
+        if (type != 3) {
+            for (SimpleRecordModel elem : result) {
+                updateBundleArrays(elem.getId(), type);
+                processDeletion(request, elem);
+            }
+            deleteEmptyBundles();
+        } else {
+            processDeletion(request, result.get(0));
         }
-        deleteEmptyBundles();
         return StatusResponses.generateError(200, request.getType() + "(s) have been deleted and corresponding bundles have been redacted!");
     }
 

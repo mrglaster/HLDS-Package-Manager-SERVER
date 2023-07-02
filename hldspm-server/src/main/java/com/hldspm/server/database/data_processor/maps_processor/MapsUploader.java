@@ -52,11 +52,16 @@ public class MapsUploader {
             String game = request.getGame();
             String name = request.getName();
             String uploadedData = request.getData();
-
+            if (uploadedData.length() == 0){
+                return StatusResponses.generateError(400, "Bad data!");
+            }
             if (!UploaderVerification.isValidUploader(uploaderToken)) {
                 return StatusResponses.generateBadTokenError();
             } else if (!BasicGetRequest.isValidGame(game)) {
                 return StatusResponses.generateBadGameError(game);
+            }
+            else if (name.length() == 0 || name.contains(" ")){
+                return StatusResponses.generateError(400, "Bad name");
             } else if (!UploadDataChecks.isNameAvailable("map", game, name)) {
                 return StatusResponses.generateBadResourceNameError();
             } else if (!Objects.equals(request.getEngine(), "gold") && !Objects.equals(request.getEngine(), "source")){
@@ -67,8 +72,6 @@ public class MapsUploader {
             if (ServerApplication.jdbcTemplate.queryForObject(query, Integer.class) != 0){
                 return StatusResponses.generateBadResourceNameError();
             }
-
-
             MapValidator validator = new MapValidator(uploadedData);
             if (!validator.isValidMap()) {
                 return StatusResponses.generateInvalidResourceDataErr();

@@ -81,10 +81,10 @@ public class BundleUploadRequest extends BasicGetRequest {
 
     public int contentTypeToId(){
         switch (getType()){
-            case "map" -> {
+            case "plugin" -> {
                 return 1;
             }
-            case "plugin" -> {
+            case "map" -> {
                 return 2;
             }
         }
