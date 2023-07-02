@@ -380,6 +380,11 @@
 4) Право на удаление есть только у главного администратора.
 
 
+## SSL. Использование протокла HTTPS
+
+Сервер поддерживает использование HTTPS протокола. Для его использования измените свойство ```server.ssl.enabled``` на ```true``` и пересоберите проект. **Венимание: сервер использует самоподписанный сертификат.** 
+
+
 ## Как запустить 
 
 ### ОС Linux
@@ -414,19 +419,24 @@ sudo -u postgres createuser -d -r -e username --pwprompt
 6) Отредактируйте файл cfg/configuration.ini
 
 ```
+
+[server]
+port=8081 ; Порт для HLDS:PM Server
+
 [database]
 server_address="localhost"
 server_port="5432"
-database_name="Name of your database"
-username="Database User's name."
-password="Database User's password"
-repo_admin="Name of repo's admin. He's a kind of supreuser who can upload/delete content + add more uploaders"
-repo_admin_token="Token of uploader "
+database_name="HLDS_PM_db"
+username="hldspm"
+password="hldspm"
+repo_admin="admin"
+repo_admin_token="TOKEN"
 create_table_structure="1"
 
 [ftp]
-address="your server ip"
+address="localhost"
 port="21"
+
 ```
 
 7) Запустите сервер при помощи команды
