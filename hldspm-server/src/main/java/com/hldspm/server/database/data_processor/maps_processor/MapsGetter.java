@@ -37,6 +37,8 @@ public class MapsGetter {
         response.addProperty("status", 404);
         response.addProperty("link", "none");
         return curGson.toJson(response);
-
     }
+
+
+
 }

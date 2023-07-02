@@ -1,7 +1,9 @@
 package com.hldspm.server.connections.controllers.maps_controllers;
 
 import com.hldspm.server.connections.requests.get_requests.MapGetRequest;
+import com.hldspm.server.connections.requests.get_requests.MapListRequest;
 import com.hldspm.server.connections.requests.upload_requests.MapUploadRequest;
+import com.hldspm.server.database.data_processor.maps_processor.MapListGetter;
 import com.hldspm.server.database.data_processor.maps_processor.MapsGetter;
 import com.hldspm.server.database.data_processor.maps_processor.MapsUploader;
 import org.springframework.http.HttpStatus;
@@ -27,10 +29,21 @@ public class MapsRestController {
 
     }
 
+    /**Processes getting of maplist by gamemodes*/
+    @GetMapping(value={"/maplist"}, produces = "application/json")
+    public String getMapList(@RequestBody MapListRequest request){
+        return MapListGetter.processMapListGetting(request);
+    }
+
+
     /**Map upload routing*/
     @PostMapping(value={"upload/map"}, produces="application/json")
     @Async
     public CompletableFuture<String> uploadMap(@RequestBody MapUploadRequest request){
         return MapsUploader.processMapUpload(request);
     }
+
+
+
+
 }
