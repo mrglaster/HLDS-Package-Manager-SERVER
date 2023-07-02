@@ -31,8 +31,6 @@ styles = ["""
 	"""]
 
 
-
-
 def process_stage(test_file: str, test_amount: int, tests_name: str) -> tuple:
     file_name = str(uuid.uuid4()) + ".log"
     init_tests_cmd = f"pytest tests/{test_file} > {file_name}"
@@ -42,21 +40,20 @@ def process_stage(test_file: str, test_amount: int, tests_name: str) -> tuple:
     with open(file_name, "r") as f:
         lines = [line + "<br>" for line in f]
         for i in lines:
-            if "FAILURES" in i:
+            if "FAILURES" in i or "ERROR" in i:
                 has_fails = True
                 break
     Path(file_name).unlink()
     if has_fails:
-        link = modules.connection_utils.connection_utils.IP_TESTS_FAILED
-        file_data += [f'<h2 class="failure">{tests_name} STATUS: FAILED! </h2>',
-                      f'<br><img src="{link}"><br>', ]
+        file_data += [f'<h2 class="failure">{tests_name} STATUS: FAILED! </h2>']
     else:
         file_data.append(f'<h2 class="success">{tests_name} STATUS: SUCCESS! ({test_amount}/{test_amount}) </h2>')
     return file_data
 
 
 def process_tests():
-    tests = ["test_users.py", "test_maps.py", "test_plugins.py", "test_bundles.py", "test_manifest.py", "test_resource_delete.py"]
+    tests = ["test_users.py", "test_maps.py", "test_plugins.py", "test_bundles.py", "test_manifest.py",
+             "test_resource_delete.py"]
     tests_amount = [6, 8, 11, 6, 3, 3]
     test_names = ["USERS TESTS", "MAPS TESTS", "PLUGINS TESTS", "BUNDLES TESTS", "MANIFEST TESTS", "DELETE TESTS"]
     result = []

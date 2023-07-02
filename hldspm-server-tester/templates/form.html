@@ -73,16 +73,16 @@
       <form method="post" action="{{ url_for('run_test') }}">
 	  
          <label for="input_data">IP address:</label>
-         <input type="text" name="input_data" id="input_data"><br>
+         <input type="text" name="input_data" required id="input_data"><br>
 
          <label for="input_port">Port:</label>
-         <input type="text" name="input_port" id="input_port"><br>
+         <input type="text" name="input_port" required id="input_port"><br>
 		 
 		 <label for="name">Main admin name:</label>
-         <input type="text" name="name" id="name"><br>
+         <input type="text" name="name" required id="name"><br>
 		 
 		 <label for="token">Main admin token:</label>
-         <input type="password" name="token" id="token"><br>
+         <input type="password" name="token" required id="token"><br>
 		 
 
          <input type="submit" value="Run tests!">
