@@ -15,10 +15,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.hldspm.server")
 public class ServerApplication {
 
 	public static JdbcTemplate jdbcTemplate;
@@ -31,7 +33,6 @@ public class ServerApplication {
 	public ServerApplication(JdbcTemplate jdbcTemplate) {
 		ServerApplication.jdbcTemplate = jdbcTemplate;
 	}
-
 
 	/**Create a backup on server shutdown*/
 	private static void processShutdownHook() {
@@ -75,16 +76,21 @@ public class ServerApplication {
 		return factory -> factory.setPort(configure.getPort());
 	}
 
+
+
 	public static void main(String[] args) {
 		readConfig();
+
 		disableLogging();
 		SpringApplication app = new SpringApplication(ServerApplication.class);
 		app.setBanner(CustomBanner.customBanner);
 		app.run(args);
+
 		StructureOrganizer.initFileSystem();
 		processDbInit();
 		DumpReader.processDumps();
 		io.customPrint("The server is running on port " + configure.getPort());
+		io.customPrint("The server users protocol: HTTP");
 		processShutdownHook();
 	}
 }

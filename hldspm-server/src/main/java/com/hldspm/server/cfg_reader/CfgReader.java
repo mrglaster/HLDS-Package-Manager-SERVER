@@ -16,6 +16,7 @@ public class CfgReader {
     private static String serverUrl;
     private static String serverPort;
 
+
     private static String dbName;
     private static String dbUsername;
     private static String dbPassword;
@@ -29,6 +30,7 @@ public class CfgReader {
     private static String createTableStructure;
 
 
+
     /**Reads database connection parameters from the ini file*/
     private void readDatabaseParameters(INIConfiguration iniConfiguration){
         dbName = iniConfiguration.getSection("database").getProperty("database_name").toString();
@@ -39,6 +41,7 @@ public class CfgReader {
         createTableStructure = iniConfiguration.getSection("database").getProperty("create_table_structure").toString();
         repoAdmin = iniConfiguration.getSection("database").getProperty("repo_admin").toString();
         repoAdminToken = iniConfiguration.getSection("database").getProperty("repo_admin_token").toString();
+
         try{
             port = Integer.parseInt(iniConfiguration.getSection("server").getProperty("port").toString());
         } catch (Exception e){
