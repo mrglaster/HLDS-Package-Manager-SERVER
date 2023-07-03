@@ -433,7 +433,7 @@
 
     ```pip install -r requirements.txt```
 или
-   ```pip install Flask==2.2.5 requests==2.23.0 ```
+   ```pip install Flask==2.2.5 requests==2.31.0```
 
 3) Запустите приложение 
 4) Откройте страницу приложения в браузере (по-умолчанию http://127.0.0.1:5000/ )
