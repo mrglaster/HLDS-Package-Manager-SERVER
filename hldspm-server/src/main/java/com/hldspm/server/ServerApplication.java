@@ -79,6 +79,7 @@ public class ServerApplication {
 
 
 
+	/**The main function*/
 	public static void main(String[] args) {
 		readConfig();
 
