@@ -3,4 +3,4 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/hldspm
     username: myuser
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver

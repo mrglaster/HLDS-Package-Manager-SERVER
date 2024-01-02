@@ -13,6 +13,7 @@ import java.util.List;
 public class AuthController {
     @Autowired
     private ContentRepository contentRepository;
+
     @GetMapping("/")
     public String home(Model model) {
         List<Content> contentList = contentRepository.findAll();
