@@ -11,6 +11,7 @@
     <modules>
         <module>GameContentRepo</module>
         <module>FileAccessServer</module>
+        <module>WebInterface</module>
     </modules>
 
     <properties>
