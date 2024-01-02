@@ -1,4 +1,4 @@
-INSERT INTO engine(name) VALUES
-    ('gold'),
-    ('source'),
-    ('source2')
+INSERT IGNORE INTO engines(name) VALUES
+    ('gold'),       -- GoldSource
+    ('source'),     -- Source
+    ('source2')     -- Source 2
