@@ -1,12 +1,13 @@
 package ru.hldspm.server;
-
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static ru.hldspm.db.repository.GameContentRepository.getGameContent;
 
 /**Starts repository server*/
 public class RepoServer {
@@ -26,9 +27,7 @@ public class RepoServer {
     private static void handleClient(Socket clientSocket) {
         try {
             InputStream input = clientSocket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-
             StringBuilder sb = new StringBuilder();
             int data;
             while ((data = input.read()) != -1) {
@@ -53,6 +52,25 @@ public class RepoServer {
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void updateRepoInformation() throws IOException {
+        File theDir = new File("cashed/");
+        if (!theDir.exists()){
+            theDir.mkdirs();
+        }
+
+        String[] supportedGames = {"valve", "cstrike", "dod", "czero", "tfc", "ts"};
+        String[] supportedPlatforms = {"linux", "windows", "mac"};
+        for (var game : supportedGames){
+            for (var platform : supportedPlatforms){
+                String contentInformation = getGameContent(game, platform);
+                File currentConfigurationInfo = new File("cashed/"+game + '_' + platform + ".json");
+                FileWriter writer = new FileWriter(currentConfigurationInfo);
+                writer.write(contentInformation);
+                writer.close();
+            }
         }
     }
 
