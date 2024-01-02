@@ -6,7 +6,6 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <!-- V1 Migrations: Tables creation -->
     <include file="db/v1/v1_create_games_table.sql"/>
-    <include file="db/v1/v1_create_engines_table.sql"/>
     <include file="db/v1/v1_create_platforms_table.sql"/>
     <include file="db/v1/v1_create_content_types_table.sql"/>
     <include file="db/v1/v1_create_content_table.sql"/>
@@ -14,7 +13,6 @@
 
     <!-- V2 Migrations: Inserting some default values -->
     <include file="db/v2/v2_insert_values_to_platforms.sql"/>
-    <include file="db/v2/v2_insert_values_to_engines.sql"/>
     <include file="db/v2/v2_insert_values_to_games.sql"/>
     <include file="db/v2/v2_insert_values_to_content_types.sql"/>
 

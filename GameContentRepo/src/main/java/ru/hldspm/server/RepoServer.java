@@ -47,7 +47,7 @@ public class RepoServer {
                 System.out.println("Sent response: ALIVE");
             } else if ("fetchgold".equals(receivedData)) {
                 System.out.println();
-                writer.println("FUCK YOU");
+                writer.println("Coming soon...");
             }
 
             clientSocket.close();

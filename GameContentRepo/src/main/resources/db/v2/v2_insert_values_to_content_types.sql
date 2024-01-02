@@ -1,5 +1,5 @@
 INSERT IGNORE INTO content_types(name) VALUES
-    ('plugin'),        -- AMX MOD X Plugin
+    ('amxplugin'),        -- AMX MOD X Plugin
     ('map'),           -- Map
     ('asplugin'),      -- AngelScript Plugin
     ('lmplugin'),      -- LambdaMod Plugin

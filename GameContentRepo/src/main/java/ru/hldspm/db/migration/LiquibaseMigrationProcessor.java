@@ -15,6 +15,7 @@ import java.util.Properties;
 
 public class LiquibaseMigrationProcessor {
     public static void processDatabaseMigration() {
+
         if (!new File(".migrated").exists()) {
             try {
                 Properties properties = new Properties();

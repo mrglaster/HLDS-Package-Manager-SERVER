@@ -19,6 +19,7 @@
         <!--Custom Properties-->
         <mysql.connector.version>8.0.33</mysql.connector.version>
         <luquibase.version>4.25.1</luquibase.version>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
 
@@ -35,6 +36,13 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${luquibase.version}</version>
+        </dependency>
+
+        <!-- Library for work with JSONs -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
 
     </dependencies>
