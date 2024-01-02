@@ -38,7 +38,12 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeHttpRequests().requestMatchers("/").authenticated().anyRequest().permitAll()
+            http.
+                    authorizeHttpRequests().
+                    requestMatchers("/").
+                    authenticated().
+                    anyRequest().
+                    permitAll()
                     .and()
                     .formLogin()
                     .loginPage("/login")
