@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Page</title>
+</head>
+<body>
+<h1>Welcome to HLDS Package Manager Web Panel!</h1>
+<h2>Content List</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Content Type</th>
+        <th>Platform</th>
+        <th>Game</th>
+        <th>Uploader</th>
+        <th>Uploaded At</th>
+        <th>Is Active</th>
+    </tr>
+    <!-- Thymeleaf loop to iterate over the contentList -->
+    <tr th:each="content : ${contentList}">
+        <td th:text="${content.id}"></td>
+        <td th:text="${content.name}"></td>
+        <td th:text="${content.contentType.name}"></td>
+        <td th:text="${content.platform.name}"></td>
+        <td th:text="${content.game.name}"></td>
+        <td th:text="${content.uploader.username}"></td>
+        <td th:text="${#temporals.format(content.uploadedAt, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${content.isActive}"></td>
+    </tr>
+</table>
+</body>
+</html>

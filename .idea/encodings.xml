@@ -7,6 +7,10 @@
     <file url="file://$PROJECT_DIR$/FileServer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/GameContentRepo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/GameContentRepo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RepoWebInterface/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RepoWebInterface/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WebInterface/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WebInterface/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
