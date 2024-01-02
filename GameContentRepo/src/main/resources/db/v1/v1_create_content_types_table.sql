@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS content_types (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    type_name VARCHAR(255) NOT NULL
+);
