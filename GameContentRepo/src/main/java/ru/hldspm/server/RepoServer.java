@@ -1,16 +1,15 @@
 package ru.hldspm.server;
+import ru.hldspm.db.repository.GameContentRepository;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static ru.hldspm.db.repository.GameContentRepository.getGameContent;
 
 /**Starts repository server*/
 public class RepoServer {
@@ -66,23 +65,18 @@ public class RepoServer {
         }
     }
 
-    public static void updateRepoInformation() throws IOException {
+    /**Caches information about the content in the repository for each game and platform*/
+    public static void createRepoInformation() throws IOException {
         File theDir = new File("cashed/");
         if (!theDir.exists()){
             theDir.mkdirs();
-        }
-
-        String[] supportedGames = {"valve", "cstrike", "dod", "czero", "tfc", "ts"};
-        String[] supportedPlatforms = {"linux", "windows", "mac"};
-        for (var game : supportedGames){
-            for (var platform : supportedPlatforms){
-                String contentInformation = getGameContent(game, platform);
-                File currentConfigurationInfo = new File("cashed/"+game + '_' + platform + ".json");
-                FileWriter writer = new FileWriter(currentConfigurationInfo);
-                writer.write(contentInformation);
-                writer.close();
+            String[] supportedGames = {"valve", "cstrike", "cstrike", "dod", "czero", "tfc", "ts"};
+            for (var i : supportedGames){
+                System.out.println("[HLDS PM] Writing cache for game: " + i);
+                GameContentRepository.createGameCache(i);
             }
+        } else {
+            System.out.println("[HLDS PM] Repository cache found. Continuing...");
         }
     }
-
 }
