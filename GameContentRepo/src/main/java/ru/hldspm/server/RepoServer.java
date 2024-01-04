@@ -70,7 +70,7 @@ public class RepoServer {
         File theDir = new File("cashed/");
         if (!theDir.exists()){
             theDir.mkdirs();
-            String[] supportedGames = {"valve", "cstrike", "cstrike", "dod", "czero", "tfc", "ts"};
+            String[] supportedGames = {"valve", "cstrike", "dod", "czero", "tfc", "ts"};
             for (var i : supportedGames){
                 System.out.println("[HLDS PM] Writing cache for game: " + i);
                 GameContentRepository.createGameCache(i);
