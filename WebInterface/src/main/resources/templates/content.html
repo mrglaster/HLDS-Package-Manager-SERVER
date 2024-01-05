@@ -5,27 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HLDS:PM Web Panel</title>
     <style>
-        .pagination {
-            display: inline-block;
-        }
+    .pagination {
+        display: flex;
+        justify-content: center; /* Center the pagination items horizontally */
+        align-items: center; /* Center the pagination items vertically */
+        margin-top: 20px; /* Add margin to separate the table and pagination */
+    }
 
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            transition: background-color .3s;
-        }
+    .pagination ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+    }
 
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
+    .pagination li {
+        margin: 0 5px; /* Add margin between pagination items */
+    }
 
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-    </style>
+    .pagination a {
+        color: black;
+        text-decoration: none;
+        padding: 8px 16px;
+        transition: background-color .3s;
+        border: 1px solid #ddd; /* Add border to pagination items */
+        border-radius: 4px; /* Add border radius for rounded corners */
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+</style>
+
 </head>
 <body>
 <h1>Welcome to HLDS Package Manager Web Panel!</h1>
