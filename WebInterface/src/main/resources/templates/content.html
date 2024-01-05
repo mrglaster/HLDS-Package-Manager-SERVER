@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HLDS:PM Web Panel</title>
     <style>
+     table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px; /* Add margin to separate the heading and table */
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
     .pagination {
         display: flex;
         justify-content: center; /* Center the pagination items horizontally */
