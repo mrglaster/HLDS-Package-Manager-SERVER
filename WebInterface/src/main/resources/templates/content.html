@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLDS:PM Web Panel</title>
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to HLDS Package Manager Web Panel!</h1>
+<h2>Content List</h2>
+
+
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Content Type</th>
+        <th>Platform</th>
+        <th>Game</th>
+        <th>Uploader</th>
+        <th>Uploaded At</th>
+        <th>Is Active</th>
+    </tr>
+    <!-- Thymeleaf loop to iterate over the contentList -->
+    <tr th:each="content : ${contentList}">
+        <td th:text="${content.id}"></td>
+        <td th:text="${content.name}"></td>
+        <td th:text="${content.contentType.name}"></td>
+        <td th:text="${content.platform.name}"></td>
+        <td th:text="${content.game.name}"></td>
+        <td th:text="${content.uploader.username}"></td>
+        <td th:text="${#temporals.format(content.uploadedAt, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${content.isActive}"></td>
+    </tr>
+</table>
+<!-- Pagination controls -->
+<div class="pagination">
+    <ul>
+        <!-- First Page -->
+        <li th:class="${currentPage == 0 ? 'disabled' : ''}">
+            <a th:if="${currentPage != 0}" th:href="@{'/content/' + 0}" th:text="'First'"></a>
+            <span th:if="${currentPage == 0}">First</span>
+        </li>
+
+        <!-- Previous Page -->
+        <li th:class="${currentPage == 0 ? 'disabled' : ''}">
+            <a th:if="${currentPage != 0}" th:href="@{'/content/' + ${currentPage - 1}}" th:text="'Previous'"></a>
+            <span th:if="${currentPage == 0}">Previous</span>
+        </li>
+
+        <!-- Page Numbers -->
+        <li th:each="page, stat : ${#numbers.sequence((currentPage > 2) ? (currentPage-3) : 0, (currentPage+3 > totalPages-1) ? totalPages : (currentPage+3))}">
+            <a th:href="@{'/content/' + ${page}}" th:text="${page}" th:class="${currentPage == page ? 'active' : ''}"></a>
+        </li>
+
+        <!-- Next Page -->
+        <li th:class="${currentPage == totalPages-1 ? 'disabled' : ''}">
+            <a th:if="${currentPage != totalPages-1}" th:href="@{'/content/' + ${currentPage + 1}}" th:text="'Next'"></a>
+            <span th:if="${currentPage == totalPages-1}">Next</span>
+        </li>
+
+        <!-- Last Page -->
+        <li th:class="${currentPage == totalPages-1 ? 'disabled' : ''}">
+            <a th:if="${currentPage != totalPages-1}" th:href="@{'/content/' + ${totalPages - 1}}" th:text="'Last'"></a>
+            <span th:if="${currentPage == totalPages-1}">Last</span>
+        </li>
+    </ul>
+</div>
+
+
+
+
+</body>
+</html>
