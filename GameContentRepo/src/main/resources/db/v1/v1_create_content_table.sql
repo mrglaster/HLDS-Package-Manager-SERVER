@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS content (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
     content_type BIGINT NOT NULL,
     platform BIGINT NOT NULL,
     game BIGINT NOT NULL,
@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS content (
     is_active BOOLEAN DEFAULT true,
     FOREIGN KEY (content_type) REFERENCES content_types(id),
     FOREIGN KEY (platform) REFERENCES platforms(id),
-    FOREIGN KEY (game) REFERENCES games(id)
+    FOREIGN KEY (game) REFERENCES games(id),
+    UNIQUE KEY unique_game_name_content_type (game, name, content_type)
 );
