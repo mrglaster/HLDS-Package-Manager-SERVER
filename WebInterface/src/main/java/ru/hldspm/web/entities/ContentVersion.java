@@ -1,6 +1,5 @@
 package ru.hldspm.web.entities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,56 +15,35 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="content")
-public class Content {
-
+@Table(name="content_versions")
+public class ContentVersion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String name;
-
     @ManyToOne
-    @JoinColumn(name = "content_type")
-    private ContentType contentType;
+    @JoinColumn(name = "content_id")
+    private Content content;
 
-    @ManyToOne
-    @JoinColumn(name = "platform")
-    private Platform platform;
+    @Column(name = "version", unique = true)
+    private String version;
 
-    @ManyToOne
-    @JoinColumn(name = "game")
-    private Game game;
-
-    @ManyToOne
-    @JoinColumn(name = "uploader_id")
-    private User uploader;
-
-    @Column(name="uploaded_at")
+    @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt;
-
-    @Column(name="is_active")
-    private boolean isActive = true;
-
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
-    private Set<ContentVersion> versions = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Content content = (Content) o;
-        return getId() != null && Objects.equals(getId(), content.getId());
+        ContentVersion that = (ContentVersion) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

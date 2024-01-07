@@ -112,7 +112,7 @@
         </li>
 
         <!-- Page Numbers -->
-        <li th:each="page, stat : ${#numbers.sequence((currentPage > 2) ? (currentPage-3) : 0, (currentPage+3 > totalPages-1) ? totalPages : (currentPage+3))}">
+        <li th:each="page, stat : ${#numbers.sequence((currentPage > 2) ? (currentPage-3) : 0, (currentPage+3 > totalPages-1) ? totalPages-1 : (currentPage+3))}">
             <a th:href="@{'/content/' + ${page}}" th:text="${page}" th:class="${currentPage == page ? 'active' : ''}"></a>
         </li>
 

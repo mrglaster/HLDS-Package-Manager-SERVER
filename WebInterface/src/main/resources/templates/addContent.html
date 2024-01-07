@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Content</title>
+</head>
+<body>
+
+<h2>Add Content</h2>
+
+<form th:action="@{/addContent}" th:object="${content}" method="post" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" required/><br/>
+
+    <label for="contentType">Content Type:</label>
+    <select id="contentType" th:field="*{contentType.id}" required>
+        <option th:each="contentType : ${contentTypes}" th:value="${contentType.id}" th:text="${contentType.name}"></option>
+    </select><br/>
+
+    <label for="platform">Platform:</label>
+    <select id="platform" th:field="*{platform.id}" required>
+        <option th:each="platform : ${platforms}" th:value="${platform.id}" th:text="${platform.name}"></option>
+    </select><br/>
+
+    <label for="game">Game:</label>
+    <select id="game" th:field="*{game.id}" required>
+        <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+    </select><br/>
+
+    <label for="version">Version:</label>
+    <input type="text" id="version" name="version" required/><br/>
+
+
+    <label for="uploader">Uploader:</label>
+    <select id="uploader" th:field="*{uploader.id}" required>
+        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+    </select><br/>
+
+    <label for="file">File:</label>
+    <input type="file" id="file" name="file" accept=".zip" required/><br/>
+
+    <button type="submit">Add Content</button>
+</form>
+
+</body>
+</html>
