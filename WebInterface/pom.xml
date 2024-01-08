@@ -20,6 +20,7 @@
         <spring.thymeleaf.version>3.1.2.RELEASE</spring.thymeleaf.version>
         <slf4j.version>1.7.5</slf4j.version>
         <mysql.connector.version>8.0.33</mysql.connector.version>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
     <dependencies>
@@ -84,6 +85,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
