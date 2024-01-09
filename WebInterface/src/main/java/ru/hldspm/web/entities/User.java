@@ -1,5 +1,6 @@
 package ru.hldspm.web.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-
 import java.util.Objects;
 
 @Entity
@@ -24,8 +24,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="username")
     private String username;
 
+    @Column(name="password")
+    private String password;
+
+    @Column(name="enabled")
+    private boolean enabled;
 
     @Override
     public boolean equals(Object o) {

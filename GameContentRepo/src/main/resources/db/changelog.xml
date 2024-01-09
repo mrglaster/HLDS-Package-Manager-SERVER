@@ -4,7 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <!-- V1 Migrations: Tables creation -->
+
+    <!-- V1 Migrations: Authentication tables creation -->
+    <include file="db/v1/v1_create_users_table.sql"/>
+    <include file="db/v1/v1_create_authorities_table.sql"/>
+
+    <!-- V1 Migrations: Repository Tables creation -->
     <include file="db/v1/v1_create_games_table.sql"/>
     <include file="db/v1/v1_create_platforms_table.sql"/>
     <include file="db/v1/v1_create_content_types_table.sql"/>
