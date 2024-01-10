@@ -18,7 +18,6 @@ public class FilesProcessingService {
         if (contentArchive != null && !contentArchive.isEmpty()) {
             String fileName =  contentName + ":" + contentVersion + ".zip";
             String uploadDir = "";
-            System.out.println("PLATFORM IS: " + platform.getName());
             if (Objects.equals(platform.getName(), "all")){
                 //TODO Replace to value from cfg file
                 uploadDir =  "/home/mrglaster/Desktop/hlds-pm-s/HLDS-Package-Manager-SERVER/files/" + game.getName() + '/' + contentType.getName() + "/";

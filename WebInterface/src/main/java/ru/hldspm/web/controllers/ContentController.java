@@ -69,7 +69,7 @@ public class ContentController {
         return new RedirectView("/content/0");
     }
 
-    @GetMapping("/addContent")
+    @GetMapping("/add-content")
     public String showAddContentForm(Model model) {
         model.addAttribute("content", new Content());
         model.addAttribute("contentTypes", contentTypeRepository.findAll());
@@ -79,7 +79,7 @@ public class ContentController {
         return "addContent";
     }
 
-    @PostMapping("/addContent")
+    @PostMapping("/add-content")
     public String addContent(@RequestParam("version") String version, @RequestPart("file") MultipartFile contentArchive, @ModelAttribute Content content) {
         Content savedContent;
         try {

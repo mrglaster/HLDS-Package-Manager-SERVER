@@ -1,4 +1,4 @@
-package ru.hldspm.web.security;
+package ru.hldspm.web.security.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import ru.hldspm.web.repository.UserRepository;
 
 import javax.sql.DataSource;
 
@@ -24,9 +25,12 @@ public class SecurityConfig {
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Bean
-    public UserDetailsManager userDetailsManager() {
+    public JdbcUserDetailsManager userDetailsManager() {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager();
         userDetailsManager.setDataSource(dataSource);
         return userDetailsManager;
@@ -35,14 +39,13 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(JdbcUserDetailsManager userDetailsManager) {
-        try{
-            UserDetails user = userDetailsManager.loadUserByUsername("admin");
-        }
-        catch(Exception e) {
+        if (userRepository.findByUsername("admin") == null){
             userDetailsManager.createUser(User.withUsername("admin")
-                    .password(passwordEncoder().encode("root"))
-                    .roles("ADMIN")
-                    .build());
+                  .password(passwordEncoder().encode("password"))
+                  .roles("ADMIN")
+                  .build());
+            System.out.println("[HLDS PM] Administrator created. Default credentials: login=admin, password=password");
+            System.out.println("[HLDS PM] We recommend you to change it on  /change-password");
         }
         return userDetailsManager;
     }
@@ -73,21 +76,24 @@ public class SecurityConfig {
 
         }
 
+
         @Override
         public void configure(HttpSecurity http) throws Exception {
+
             http
                     .authenticationProvider(authenticationProvider)
-                    .authorizeHttpRequests()
-                    .requestMatchers("/", "/login", "/change-password").authenticated()
-                    .anyRequest().permitAll()
+                        .authorizeHttpRequests()
+                        .requestMatchers("/",  "/change-password", "/content", "/add-content", "/logout").authenticated()
                     .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/")
                     .permitAll()
+
                     .and()
-                    .logout()
-                    .permitAll();
+                        .logout()
+                            .invalidateHttpSession(true)
+                            .logoutUrl("/logout")
+                            .logoutSuccessUrl("/login");
         }
 
     }

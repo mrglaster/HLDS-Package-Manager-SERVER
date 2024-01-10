@@ -6,3 +6,6 @@ spring:
     username: myuser
     password: password
     driver-class-name: com.mysql.jdbc.Driver
+  security:
+    logout:
+      success-url: /login?logout
