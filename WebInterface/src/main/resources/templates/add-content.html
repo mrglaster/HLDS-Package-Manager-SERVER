@@ -8,7 +8,7 @@
 
 <h2>Add Content</h2>
 
-<form th:action="@{/addContent}" th:object="${content}" method="post" enctype="multipart/form-data">
+<form th:action="@{/add-content}" th:object="${content}" method="post" enctype="multipart/form-data">
     <label for="name">Name:</label>
     <input type="text" id="name" th:field="*{name}" required/><br/>
 

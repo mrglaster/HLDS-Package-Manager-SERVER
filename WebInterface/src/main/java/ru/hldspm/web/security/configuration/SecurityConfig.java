@@ -2,19 +2,18 @@ package ru.hldspm.web.security.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
-
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 import ru.hldspm.web.repository.UserRepository;
 
 import javax.sql.DataSource;
@@ -64,27 +63,19 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
-    @Configuration
-    public static class WebSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-
-        private final DaoAuthenticationProvider authenticationProvider;
-
-        @Autowired
-        public WebSecurityConfig(DaoAuthenticationProvider authenticationProvider) {
-            this.authenticationProvider = authenticationProvider;
-
-        }
-
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-
-            http
-                    .authenticationProvider(authenticationProvider)
-                        .authorizeHttpRequests()
-                        .requestMatchers("/",  "/change-password", "/content", "/add-content", "/logout").authenticated()
-                    .and()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable().authorizeHttpRequests()
+                .requestMatchers("/login")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and()
                     .formLogin()
                     .loginPage("/login")
                     .permitAll()
@@ -94,7 +85,8 @@ public class SecurityConfig {
                             .invalidateHttpSession(true)
                             .logoutUrl("/logout")
                             .logoutSuccessUrl("/login");
-        }
-
+        //http.addFilterBefore(new LoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+
 }

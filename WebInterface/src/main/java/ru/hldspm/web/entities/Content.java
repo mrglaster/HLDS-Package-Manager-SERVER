@@ -59,6 +59,7 @@ public class Content {
     private boolean isActive = true;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<ContentVersion> versions = new HashSet<>();
 
     @Override

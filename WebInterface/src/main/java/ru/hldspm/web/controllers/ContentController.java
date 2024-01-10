@@ -27,8 +27,6 @@ import ru.hldspm.web.repository.PlatformRepository;
 import ru.hldspm.web.repository.UserRepository;
 import ru.hldspm.web.service.CacheUpdateService;
 import ru.hldspm.web.service.FilesProcessingService;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -76,7 +74,7 @@ public class ContentController {
         model.addAttribute("platforms", platformRepository.findAll());
         model.addAttribute("games", gameRepository.findAll());
         model.addAttribute("users", userRepository.findAll());
-        return "addContent";
+        return "add-content";
     }
 
     @PostMapping("/add-content")
@@ -110,7 +108,7 @@ public class ContentController {
             //TODO Add JSONs update
         }
         CacheUpdateService.updateJsonCache(savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
-        return "redirect:/addContent";
+        return "redirect:/add-content";
     }
 
 
