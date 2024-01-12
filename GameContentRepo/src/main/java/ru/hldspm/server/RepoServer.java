@@ -52,7 +52,7 @@ public class RepoServer {
             } else if (receivedData.contains("fetchgold")) {
                 // Expected string example: fetchgold;cstrike;linux
                 String[] params = receivedData.split(";");
-                String fileName = "cashed/" + params[1] + "_" + params[2] + ".json";
+                String fileName = "cached/" + params[1] + "_" + params[2] + ".json";
                 BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
                 String line;
                 while ((line = fileReader.readLine()) != null) {
@@ -67,7 +67,7 @@ public class RepoServer {
 
     /**Caches information about the content in the repository for each game and platform*/
     public static void createRepoInformation() throws IOException {
-        File theDir = new File("cashed/");
+        File theDir = new File("cached/");
         if (!theDir.exists()){
             theDir.mkdirs();
             String[] supportedGames = {"valve", "cstrike", "dod", "czero", "tfc", "ts"};

@@ -10,7 +10,7 @@ public class Main {
         try {
             LiquibaseMigrationProcessor.processDatabaseMigration();
             RepoServer.createRepoInformation();
-            RepoServer.startServer(666);
+            RepoServer.startServer(5611);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

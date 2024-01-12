@@ -19,9 +19,9 @@ public class CacheUpdateService {
     private static final int MAP_TYPE = 2;
     private static final int MM_MODULE_TYPE = 6;
 
+    private static final String cacheFolder = System.getProperty("user.dir") + "/cached/";
 
     private static final String[] supportedPlatforms = new String[]{"all", "linux", "windows", "mac"};
-    private static final String basePath = "/home/mrglaster/Desktop/hlds-pm-s/HLDS-Package-Manager-SERVER/cashed/"; //TODO Remove this CRAP
 
     private static final Gson gson = new Gson();
 
@@ -36,7 +36,7 @@ public class CacheUpdateService {
     private static void updateMapJson(String game, String contentName){
         for (int i = 1; i < supportedPlatforms.length; i++ ){
             String currentPlatform = supportedPlatforms[i];
-            String currentJsonFile = basePath + "/" + game + "_" + currentPlatform + ".json";
+            String currentJsonFile = cacheFolder + "/" + game + "_" + currentPlatform + ".json";
             try {
                 JsonObject jsonData = gson.fromJson(new FileReader(currentJsonFile), JsonObject.class);
                 JsonArray mapsArray = jsonData.get("maps").getAsJsonArray();
@@ -56,7 +56,7 @@ public class CacheUpdateService {
         for (int i = 1; i < supportedPlatforms.length; i++ ){
             try {
                 String currentPlatform = supportedPlatforms[i];
-                String currentJsonFile = basePath + "/" + game + "_" + currentPlatform + ".json";
+                String currentJsonFile = cacheFolder + "/" + game + "_" + currentPlatform + ".json";
                 JsonObject jsonData = gson.fromJson(new FileReader(currentJsonFile), JsonObject.class);
                 JsonArray pluginsArray = jsonData.getAsJsonArray("amx-plugins");
                 JsonObject updatingPlugin = null;

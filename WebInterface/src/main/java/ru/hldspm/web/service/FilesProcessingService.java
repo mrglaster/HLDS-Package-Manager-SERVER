@@ -14,18 +14,18 @@ import java.util.Objects;
 
 @Service
 public class FilesProcessingService {
+    private static final String fileServerFolder = System.getProperty("user.dir") +  "/files/";
     public static void saveUploadedContent(MultipartFile contentArchive, Game game, Platform platform, ContentType contentType, String contentName, String contentVersion){
         if (contentArchive != null && !contentArchive.isEmpty()) {
             String fileName = "";
-            if (contentType.getName().equals("map")){
+            if (contentType.getName().equals("maps")){
                 fileName =  contentName + ".zip";
             } else {
                 fileName = contentName + ":" + contentVersion + ".zip";
             }
                 String uploadDir = "";
             if (Objects.equals(platform.getName(), "all")){
-                //TODO Replace to value from cfg file
-                uploadDir =  "/home/mrglaster/Desktop/hlds-pm-s/HLDS-Package-Manager-SERVER/files/" + game.getName() + '/' + contentType.getName() + "/";
+                uploadDir =  fileServerFolder + game.getName() + '/' + contentType.getName() + "/";
                 if ((Objects.equals(contentType.getName(), "amxmodules") || Objects.equals(contentType.getName(), "mmmodules")) && !Objects.equals(platform.getName(), "all")){
                     uploadDir +=  platform.getName() + "/";
                 }

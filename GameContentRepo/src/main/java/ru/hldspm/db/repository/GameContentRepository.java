@@ -29,7 +29,7 @@ public class GameContentRepository {
     private static final int PLATFORM_MAC = 4;
 
     private static final Gson currentGson = new Gson();
-    private static final String CACHE_DIRECTORY = "cashed/";
+    private static final String CACHE_DIRECTORY = "cached/";
 
     /** Creates cache in JSON files for the current game */
     public static void createGameCache(String game) {
