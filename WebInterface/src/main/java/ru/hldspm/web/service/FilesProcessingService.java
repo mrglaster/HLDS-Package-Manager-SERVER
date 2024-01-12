@@ -26,6 +26,9 @@ public class FilesProcessingService {
             if (Objects.equals(platform.getName(), "all")){
                 //TODO Replace to value from cfg file
                 uploadDir =  "/home/mrglaster/Desktop/hlds-pm-s/HLDS-Package-Manager-SERVER/files/" + game.getName() + '/' + contentType.getName() + "/";
+                if ((Objects.equals(contentType.getName(), "amxmodules") || Objects.equals(contentType.getName(), "mmmodules")) && !Objects.equals(platform.getName(), "all")){
+                    uploadDir +=  platform.getName() + "/";
+                }
                 try {
                     Files.createDirectories(Path.of(uploadDir));
                 } catch (IOException e) {
@@ -35,10 +38,11 @@ public class FilesProcessingService {
             String filePath = uploadDir + fileName;
             try {
                 contentArchive.transferTo(new File(filePath));
+                System.out.println("[HLDS PM] Content " + contentName +  " saved at: " + filePath);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("[HLDS PM] Content " + contentName +  " saved at: " + filePath);
+
 
         }
     }

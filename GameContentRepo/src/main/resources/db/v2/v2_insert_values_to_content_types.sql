@@ -1,8 +1,8 @@
 INSERT IGNORE INTO content_types(name) VALUES
-    ('amxplugin'),        -- AMX MOD X Plugin
-    ('map'),           -- Map
-    ('asplugin'),      -- AngelScript Plugin
-    ('lmplugin'),      -- LambdaMod Plugin
-    ('smplugin'),      -- Source Mod Plugin
-    ('mmmodule'),      -- Metamod module
-    ('axmodule')       -- Amx Mod X Module
+    ('amxplugins'),      -- AMX MOD X Plugins
+    ('maps'),            -- Maps
+    ('asplugins'),       -- AngelScript Plugins
+    ('lmplugins'),       -- LambdaMod Plugins
+    ('smplugins'),       -- Source Mod Plugins
+    ('mmmodules'),       -- Metamod modules
+    ('amxmodules')       -- AMX MOD X Modules
