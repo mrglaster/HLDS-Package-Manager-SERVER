@@ -104,15 +104,14 @@ public class ContentController {
             contentVersion.setVersion(version);
             contentVersion.setUploadedAt(LocalDateTime.now());
             contentVersionRepository.save(contentVersion);
-            FilesProcessingService.saveUploadedContent(contentArchive, savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
-            //TODO Add JSONs update
         }
+        FilesProcessingService.saveUploadedContent(contentArchive, savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
         CacheUpdateService.updateJsonCache(savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
         return "redirect:/add-content";
     }
 
 
-    @GetMapping(value={"/content/versions/{contentId}", "/content/versions/{contentId}/"})
+    @GetMapping(value={"/content/{contentId}/versions/", "/content/{contentId}/versions"})
     public String showContentVersions(@PathVariable("contentId") long contentId, Model model){
         Content currentContent = contentRepository.findById(contentId);
         if (currentContent != null){

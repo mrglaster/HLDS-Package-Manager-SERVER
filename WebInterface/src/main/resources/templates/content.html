@@ -89,7 +89,7 @@
         <td th:text="${content.id}"></td>
         <td>
         <span th:if="${content.contentType.id != 2}">
-            <a th:href="@{'/content/versions/' + ${content.id}}" th:text="${content.name}"></a>
+            <a th:href="@{'/content/' + ${content.id} + '/versions'}" th:text="${content.name}"></a>
         </span>
             <span th:unless="${content.contentType.id != 2}" th:text="${content.name}"></span>
         </td>

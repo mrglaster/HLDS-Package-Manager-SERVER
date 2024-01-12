@@ -16,8 +16,13 @@ import java.util.Objects;
 public class FilesProcessingService {
     public static void saveUploadedContent(MultipartFile contentArchive, Game game, Platform platform, ContentType contentType, String contentName, String contentVersion){
         if (contentArchive != null && !contentArchive.isEmpty()) {
-            String fileName =  contentName + ":" + contentVersion + ".zip";
-            String uploadDir = "";
+            String fileName = "";
+            if (contentType.getName().equals("map")){
+                fileName =  contentName + ".zip";
+            } else {
+                fileName = contentName + ":" + contentVersion + ".zip";
+            }
+                String uploadDir = "";
             if (Objects.equals(platform.getName(), "all")){
                 //TODO Replace to value from cfg file
                 uploadDir =  "/home/mrglaster/Desktop/hlds-pm-s/HLDS-Package-Manager-SERVER/files/" + game.getName() + '/' + contentType.getName() + "/";
@@ -33,7 +38,8 @@ public class FilesProcessingService {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("File saved at: " + filePath);
+            System.out.println("[HLDS PM] Content " + contentName +  " saved at: " + filePath);
+
         }
     }
 }
