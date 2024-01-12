@@ -9,4 +9,5 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findAll();
     Content findByName(String name);
+    Content findById(long id);
 }

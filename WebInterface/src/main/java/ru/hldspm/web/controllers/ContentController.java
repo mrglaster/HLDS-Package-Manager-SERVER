@@ -52,7 +52,7 @@ public class ContentController {
     private ContentVersionRepository contentVersionRepository;
 
 
-    @GetMapping(value={"/content/{pageNumber}", "/content/{pageNumber}/"})
+    @GetMapping(value={"/content/show/{pageNumber}", "/content/show/{pageNumber}/"})
     public String home(@PathVariable("pageNumber") int pageNumber, Model model) {
         int PAGE_SIZE = 50;
         Page<Content> contentPage = contentRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
@@ -62,13 +62,13 @@ public class ContentController {
         return "content";
     }
 
-    @GetMapping(value={"/content", "/content/"})
+    @GetMapping(value={"/content", "/content/", "/content/show", "/content/show/"})
     public RedirectView contentRedirect(){
-        return new RedirectView("/content/0");
+        return new RedirectView("/content/show/0");
     }
 
     @GetMapping("/add-content")
-    public String showAddContentForm(Model model) {
+    public String showContentAddingForm(Model model) {
         model.addAttribute("content", new Content());
         model.addAttribute("contentTypes", contentTypeRepository.findAll());
         model.addAttribute("platforms", platformRepository.findAll());
@@ -97,7 +97,7 @@ public class ContentController {
         if (savedContent.getVersions() == null) {
             savedContent.setVersions(new HashSet<>());
         }
-        // Saves content's version to the versions table if necessary
+
         if (!Objects.equals(savedContent.getContentType().getName(), "map")) {
             ContentVersion contentVersion = new ContentVersion();
             contentVersion.setContent(savedContent);
@@ -111,5 +111,16 @@ public class ContentController {
         return "redirect:/add-content";
     }
 
+
+    @GetMapping(value={"/content/versions/{contentId}", "/content/versions/{contentId}/"})
+    public String showContentVersions(@PathVariable("contentId") long contentId, Model model){
+        Content currentContent = contentRepository.findById(contentId);
+        if (currentContent != null){
+            model.addAttribute("contentVersions", currentContent.getVersions());
+            return "content-versions";
+        }
+        return "redirect:/content";
+
+    }
 
 }

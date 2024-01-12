@@ -1,6 +1,10 @@
 server:
   port: 5612
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/hldspm
     username: myuser

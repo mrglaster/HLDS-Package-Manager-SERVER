@@ -87,7 +87,12 @@
     <!-- Thymeleaf loop to iterate over the contentList -->
     <tr th:each="content : ${contentList}">
         <td th:text="${content.id}"></td>
-        <td th:text="${content.name}"></td>
+        <td>
+        <span th:if="${content.contentType.id != 2}">
+            <a th:href="@{'/content/versions/' + ${content.id}}" th:text="${content.name}"></a>
+        </span>
+            <span th:unless="${content.contentType.id != 2}" th:text="${content.name}"></span>
+        </td>
         <td th:text="${content.contentType.name}"></td>
         <td th:text="${content.platform.name}"></td>
         <td th:text="${content.game.name}"></td>
@@ -95,6 +100,7 @@
         <td th:text="${#temporals.format(content.uploadedAt, 'dd-MM-yyyy HH:mm')}"></td>
         <td th:text="${content.isActive}"></td>
     </tr>
+
 </table>
 <!-- Pagination controls -->
 <div class="pagination">
