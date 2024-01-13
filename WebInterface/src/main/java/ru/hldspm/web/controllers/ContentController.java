@@ -105,8 +105,8 @@ public class ContentController {
             contentVersion.setUploadedAt(LocalDateTime.now());
             contentVersionRepository.save(contentVersion);
         }
-        FilesProcessingService.saveUploadedContent(contentArchive, savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
-        CacheUpdateService.updateJsonCache(savedContent.getGame(), savedContent.getPlatform(), savedContent.getContentType(), savedContent.getName(), version);
+        FilesProcessingService.saveUploadedContent(contentArchive, savedContent, version);
+        CacheUpdateService.updateJsonCache(savedContent, version);
         return "redirect:/add-content";
     }
 

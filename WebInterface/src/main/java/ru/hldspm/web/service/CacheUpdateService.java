@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
-import ru.hldspm.web.entities.ContentType;
-import ru.hldspm.web.entities.Game;
-import ru.hldspm.web.entities.Platform;
-
+import ru.hldspm.web.entities.Content;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,11 +22,13 @@ public class CacheUpdateService {
 
     private static final Gson gson = new Gson();
 
-    public static void updateJsonCache(Game game, Platform platform, ContentType contentType, String contentName, String contentVersion){
-        if (contentType.getId() == MAP_TYPE) {
-            updateMapJson(game.getName(), contentName);
-        } else if (contentType.getId() == AMX_PLUGIN_TYPE) {
-            updatePluginJsom(game.getName(), contentName, contentVersion);
+    public static void updateJsonCache(Content savedContent, String contentVersion){
+        long contentTypeId = savedContent.getContentType().getId();
+        String currentGame = savedContent.getGame().getName();
+        if (contentTypeId == MAP_TYPE) {
+            updateMapJson(currentGame, savedContent.getName());
+        } else if (contentTypeId == AMX_PLUGIN_TYPE) {
+            updatePluginJsom(currentGame, savedContent.getName(), contentVersion);
         }
     }
 
