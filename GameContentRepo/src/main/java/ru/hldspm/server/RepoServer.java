@@ -75,6 +75,7 @@ public class RepoServer {
                 System.out.println("[HLDS PM] Writing cache for game: " + i);
                 GameContentRepository.createGameCache(i);
             }
+            System.out.println("[HLDS PM] Repository cache has been created");
         } else {
             System.out.println("[HLDS PM] Repository cache found. Continuing...");
         }
