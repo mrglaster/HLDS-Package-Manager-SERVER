@@ -8,6 +8,7 @@
     <!-- V1 Migrations: Authentication tables creation -->
     <include file="db/v1/v1_create_users_table.sql"/>
     <include file="db/v1/v1_create_authorities_table.sql"/>
+    <include file="db/v1/v1_create_api_tokens_table.sql"/>
 
     <!-- V1 Migrations: Repository Tables creation -->
     <include file="db/v1/v1_create_games_table.sql"/>
@@ -15,6 +16,7 @@
     <include file="db/v1/v1_create_content_types_table.sql"/>
     <include file="db/v1/v1_create_content_table.sql"/>
     <include file="db/v1/v1_create_content_versions_table.sql"/>
+
 
     <!-- V2 Migrations: Inserting some default values -->
     <include file="db/v2/v2_insert_values_to_platforms.sql"/>

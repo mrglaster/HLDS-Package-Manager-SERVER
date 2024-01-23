@@ -14,9 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.hldspm.web.entities.ApiToken;
+import ru.hldspm.web.repository.ApiTokensRepository;
 import ru.hldspm.web.repository.UserRepository;
 
 import javax.sql.DataSource;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +30,8 @@ public class SecurityConfig {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ApiTokensRepository apiTokensRepository;
 
     @Bean
     public JdbcUserDetailsManager userDetailsManager() {
@@ -43,6 +48,11 @@ public class SecurityConfig {
                   .password(passwordEncoder().encode("password"))
                   .roles("ADMIN")
                   .build());
+            ApiToken currentToken = new ApiToken();
+            currentToken.setToken(UUID.randomUUID().toString());
+            currentToken.setUploader(userRepository.findByUsername("admin"));
+            apiTokensRepository.save(currentToken);
+
             System.out.println("[HLDS PM] Administrator created. Default credentials: login=admin, password=password");
             System.out.println("[HLDS PM] We recommend you to change it on  /change-password");
         }
@@ -85,7 +95,6 @@ public class SecurityConfig {
                             .invalidateHttpSession(true)
                             .logoutUrl("/logout")
                             .logoutSuccessUrl("/login");
-        //http.addFilterBefore(new LoginFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
